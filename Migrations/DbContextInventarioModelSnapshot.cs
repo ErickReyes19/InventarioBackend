@@ -26,15 +26,15 @@ namespace Inventario.Migrations
                 {
                     b.Property<string>("id")
                         .HasMaxLength(36)
-                        .HasColumnType("char(36)")
-                        .IsFixedLength();
+                        .HasColumnType("varchar(36)");
 
-                    b.Property<bool?>("activo")
-                        .HasColumnType("tinyint(1)");
+                    b.Property<ulong>("activo")
+                        .HasColumnType("bit");
 
                     b.Property<string>("apellido")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<string>("correo")
                         .IsRequired()
@@ -52,7 +52,8 @@ namespace Inventario.Migrations
 
                     b.Property<string>("nombre")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)");
 
                     b.Property<DateTime?>("updated_at")
                         .HasColumnType("datetime(6)");
@@ -66,41 +67,37 @@ namespace Inventario.Migrations
                 {
                     b.Property<string>("id")
                         .HasMaxLength(36)
-                        .HasColumnType("char(36)")
-                        .IsFixedLength();
+                        .HasColumnType("varchar(36)");
 
-                    b.Property<bool?>("activo")
-                        .HasColumnType("tinyint(1)");
+                    b.Property<string>("RoleId")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<ulong>("activo")
+                        .HasColumnType("bit");
 
                     b.Property<string>("contrasena")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime?>("created_at")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<string>("empleado_id")
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("empleadoid")
-                        .HasColumnType("char(36)");
-
-                    b.Property<string>("roleId")
-                        .HasColumnType("char(36)");
-
                     b.Property<string>("role_id")
+                        .IsRequired()
                         .HasColumnType("longtext");
 
                     b.Property<DateTime?>("updated_at")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("usuario")
-                        .HasColumnType("longtext");
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.HasKey("id");
 
-                    b.HasIndex("empleadoid");
-
-                    b.HasIndex("roleId");
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Usuarios");
                 });
@@ -108,9 +105,7 @@ namespace Inventario.Migrations
             modelBuilder.Entity("Permiso", b =>
                 {
                     b.Property<string>("Id")
-                        .HasMaxLength(36)
-                        .HasColumnType("char(36)")
-                        .IsFixedLength();
+                        .HasColumnType("varchar(255)");
 
                     b.Property<bool?>("Activo")
                         .HasColumnType("tinyint(1)");
@@ -137,9 +132,7 @@ namespace Inventario.Migrations
             modelBuilder.Entity("Role", b =>
                 {
                     b.Property<string>("Id")
-                        .HasMaxLength(36)
-                        .HasColumnType("char(36)")
-                        .IsFixedLength();
+                        .HasColumnType("varchar(255)");
 
                     b.Property<bool>("Activo")
                         .HasColumnType("tinyint(1)");
@@ -166,10 +159,10 @@ namespace Inventario.Migrations
             modelBuilder.Entity("RolePermiso", b =>
                 {
                     b.Property<string>("RolId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("PermisoId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("varchar(255)");
 
                     b.HasKey("RolId", "PermisoId");
 
@@ -180,17 +173,21 @@ namespace Inventario.Migrations
 
             modelBuilder.Entity("Inventario.Models.Usuario", b =>
                 {
-                    b.HasOne("Inventario.Models.Empleado", "empleado")
-                        .WithMany("Usuario")
-                        .HasForeignKey("empleadoid");
-
-                    b.HasOne("Role", "role")
+                    b.HasOne("Role", "Role")
                         .WithMany("Usuarios")
-                        .HasForeignKey("roleId");
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("empleado");
+                    b.HasOne("Inventario.Models.Empleado", "Empleado")
+                        .WithOne("Usuario")
+                        .HasForeignKey("Inventario.Models.Usuario", "id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("role");
+                    b.Navigation("Empleado");
+
+                    b.Navigation("Role");
                 });
 
             modelBuilder.Entity("RolePermiso", b =>
@@ -214,7 +211,8 @@ namespace Inventario.Migrations
 
             modelBuilder.Entity("Inventario.Models.Empleado", b =>
                 {
-                    b.Navigation("Usuario");
+                    b.Navigation("Usuario")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Permiso", b =>

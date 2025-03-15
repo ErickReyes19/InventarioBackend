@@ -17,11 +17,15 @@ namespace Inventario.Repositories
         public async Task<IEnumerable<Empleado>> GetEmpleados()
         {
             return await _dbContextInventario.Empleados.ToListAsync();
+        }        
+        public async Task<Empleado> GetEmpleadoById(string id)
+        {
+            return await _dbContextInventario.Empleados.Where(e => e.id == id).FirstAsync();
         }
 
         public async Task<IEnumerable<Empleado>> GetEmpleadosActivos()
         {
-            return await _dbContextInventario.Empleados.ToListAsync();
+            return await _dbContextInventario.Empleados.Where(e => e.activo == true).ToListAsync();
         }
 
         public async Task<Empleado> PostEmpleados( Empleado empleado)

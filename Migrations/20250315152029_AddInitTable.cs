@@ -18,18 +18,18 @@ namespace Inventario.Migrations
                 name: "Empleados",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false)
+                    id = table.Column<string>(type: "varchar(36)", maxLength: 36, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    nombre = table.Column<string>(type: "longtext", nullable: false)
+                    nombre = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    apellido = table.Column<string>(type: "longtext", nullable: false)
+                    apellido = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     correo = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     edad = table.Column<int>(type: "int", nullable: true),
                     genero = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    activo = table.Column<bool>(type: "tinyint(1)", nullable: true),
+                    activo = table.Column<ulong>(type: "bit", nullable: false),
                     created_at = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     updated_at = table.Column<DateTime>(type: "datetime(6)", nullable: true)
                 },
@@ -43,7 +43,7 @@ namespace Inventario.Migrations
                 name: "Permisos",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false)
+                    Id = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Nombre = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -63,7 +63,7 @@ namespace Inventario.Migrations
                 name: "Roles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false)
+                    Id = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Nombre = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -83,9 +83,9 @@ namespace Inventario.Migrations
                 name: "RolePermiso",
                 columns: table => new
                 {
-                    RolId = table.Column<string>(type: "char(36)", nullable: false)
+                    RolId = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    PermisoId = table.Column<string>(type: "char(36)", nullable: false)
+                    PermisoId = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
@@ -110,37 +110,35 @@ namespace Inventario.Migrations
                 name: "Usuarios",
                 columns: table => new
                 {
-                    id = table.Column<string>(type: "char(36)", fixedLength: true, maxLength: 36, nullable: false)
+                    id = table.Column<string>(type: "varchar(36)", maxLength: 36, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    usuario = table.Column<string>(type: "longtext", nullable: true)
+                    usuario = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    contrasena = table.Column<string>(type: "longtext", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    empleado_id = table.Column<string>(type: "longtext", nullable: true)
+                    contrasena = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     created_at = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     updated_at = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    role_id = table.Column<string>(type: "longtext", nullable: true)
+                    role_id = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    activo = table.Column<bool>(type: "tinyint(1)", nullable: true),
-                    empleadoid = table.Column<string>(type: "char(36)", nullable: true)
-                        .Annotation("MySql:CharSet", "utf8mb4"),
-                    roleId = table.Column<string>(type: "char(36)", nullable: true)
+                    activo = table.Column<ulong>(type: "bit", nullable: false),
+                    RoleId = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Usuarios", x => x.id);
                     table.ForeignKey(
-                        name: "FK_Usuarios_Empleados_empleadoid",
-                        column: x => x.empleadoid,
+                        name: "FK_Usuarios_Empleados_id",
+                        column: x => x.id,
                         principalTable: "Empleados",
-                        principalColumn: "id");
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Usuarios_Roles_roleId",
-                        column: x => x.roleId,
+                        name: "FK_Usuarios_Roles_RoleId",
+                        column: x => x.RoleId,
                         principalTable: "Roles",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -150,14 +148,9 @@ namespace Inventario.Migrations
                 column: "PermisoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Usuarios_empleadoid",
+                name: "IX_Usuarios_RoleId",
                 table: "Usuarios",
-                column: "empleadoid");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Usuarios_roleId",
-                table: "Usuarios",
-                column: "roleId");
+                column: "RoleId");
         }
 
         /// <inheritdoc />

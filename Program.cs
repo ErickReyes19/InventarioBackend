@@ -2,6 +2,7 @@ using System.Globalization;
 using System.Text;
 using AspNetCoreRateLimit;
 using Inventario.Models;
+using Inventario.services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -89,7 +90,7 @@ builder.Services.AddInMemoryRateLimiting();  // Usar almacenamiento en memoria p
 builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();  // Configuración del rate limit
 builder.Services.AddMemoryCache();  // Habilitar almacenamiento en caché para los contadores de rate limiting
 builder.Services.AddHttpContextAccessor(); // Acceso al contexto HTTP para evaluar las peticiones
-
+builder.Services.AddServices();
 
 var app = builder.Build();
 

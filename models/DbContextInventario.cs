@@ -1,6 +1,4 @@
-﻿
-using Inventario.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Inventario.Models // Aquí faltaban llaves para definir el espacio de nombres correctamente
 {
@@ -18,58 +16,25 @@ namespace Inventario.Models // Aquí faltaban llaves para definir el espacio de 
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<RolePermiso>()
-                .HasKey(rp => new { rp.RolId, rp.PermisoId });
+            modelBuilder.Entity<RolePermiso>(entity =>
+            {
+                entity
+                    .HasKey(rp => new { rp.RolId, rp.PermisoId });
 
-            modelBuilder.Entity<RolePermiso>()
-                .HasOne(rp => rp.Rol)
-                .WithMany(r => r.RolePermisos)
-                .HasForeignKey(rp => rp.RolId);
+                entity
+                    .HasOne(rp => rp.Rol)
+                    .WithMany(r => r.RolePermisos)
+                    .HasForeignKey(rp => rp.RolId);
 
-            modelBuilder.Entity<RolePermiso>()
-                .HasOne(rp => rp.Permiso)
-                .WithMany(p => p.RolePermisos)
-                .HasForeignKey(rp => rp.PermisoId);
+                entity
+                    .HasOne(rp => rp.Permiso)
+                    .WithMany(p => p.RolePermisos)
+                    .HasForeignKey(rp => rp.PermisoId);
 
-            modelBuilder.Entity<RolePermiso>()
-                .ToTable("RolePermiso");
+                entity
+                    .ToTable("RolePermiso");
 
-            modelBuilder.Entity<Empleado>()
-                .Property(e => e.id)
-                .HasMaxLength(36)
-                .IsFixedLength();
-
-            modelBuilder.Entity<Empleado>()
-                .Property(e => e.nombre)
-                .IsRequired();
-
-            modelBuilder.Entity<Empleado>()
-                .Property(e => e.apellido)
-                .IsRequired();      
-            
-            modelBuilder.Entity<Empleado>()
-                .Property(e => e.correo)
-                .IsRequired();          
-            
-            modelBuilder.Entity<Empleado>()
-                .Property(e => e.correo)
-                .IsRequired();
-
-            modelBuilder.Entity<Usuario>()
-                .Property(e => e.id)
-                .HasMaxLength(36)
-                .IsFixedLength();
-
-            modelBuilder.Entity<Permiso>()
-                .Property(e => e.Id)
-                .HasMaxLength(36)
-                .IsFixedLength();
-
-            modelBuilder.Entity<Role>()
-                .Property(e => e.Id)
-                .HasMaxLength(36)
-                .IsFixedLength();
-
+            });
 
 
             base.OnModelCreating(modelBuilder);

@@ -1,0 +1,22 @@
+meta {
+  name: PuEmpleados
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{url}}/api/Empleado/15335a35-2ef8-42bd-8ee4-731734a86188
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "nombre": "Juana",
+    "apellido": "asdasd",
+    "correo":"asdew@gmail.com",
+    "telefono": "22334455",
+    "edad": 28,
+    "genero": "asdasdasd"
+  }
+}
