@@ -1,6 +1,7 @@
 ﻿using Inventario.interfaces;
 using Inventario.interfaces.IEmpleado;
 using Inventario.Models;
+using Inventario.Utils;
 
 namespace Inventario.services
 {
@@ -12,21 +13,71 @@ namespace Inventario.services
         public EmpleadoService(IEmpleadoRepository empleadoRepository, IAsignaciones asignacionesService)
         {
             _empleadoRepository = empleadoRepository;
-            _AsinacionesService = asignacionesService;  
+            _AsinacionesService = asignacionesService;
         }
 
-        public async Task<IEnumerable<Empleado>> GetEmpleados()
+        public async Task<IEnumerable<EmpleadoDTO>> GetEmpleados()
         {
-            return await _empleadoRepository.GetEmpleados();
-        }        
-        public async Task<Empleado> GetEmpleadoById(string id)
+
+            var empleados = await _empleadoRepository.GetEmpleados();
+
+            var empleadosDto = empleados.Select(e => new EmpleadoDTO
+            {
+                id = e.id,
+                nombre = e.nombre,
+                apellido = e.apellido,
+                correo = e.correo,
+                edad = e.edad,
+                genero = e.genero,
+                activo = e.activo,
+                created_at = e.created_at,
+                updated_at = e.updated_at,
+                usuario = e.Usuario != null ? e.Usuario.usuario : null // Extrae solo el nombre de usuario
+            });
+
+            return empleadosDto;
+        }
+        public async Task<EmpleadoDTO?> GetEmpleadoById(string id)
         {
-            return await _empleadoRepository.GetEmpleadoById(id);
+            var empleado = await _empleadoRepository.GetEmpleadoById(id);
+
+            if (empleado == null) return null;
+
+            var empleadoDto = new EmpleadoDTO
+            {
+                id = empleado.id,
+                nombre = empleado.nombre,
+                apellido = empleado.apellido,
+                correo = empleado.correo,
+                edad = empleado.edad,
+                genero = empleado.genero,
+                activo = empleado.activo,
+                created_at = empleado.created_at,
+                updated_at = empleado.updated_at,
+                usuario = empleado.Usuario?.usuario // Manejo seguro de null
+            };
+
+            return empleadoDto;
         }
 
-        public async Task<IEnumerable<Empleado>> GetEmpleadosActivos()
+
+        public async Task<IEnumerable<EmpleadoDTO>> GetEmpleadosActivos()
         {
-            return await _empleadoRepository.GetEmpleadosActivos();
+            var empleados = await _empleadoRepository.GetEmpleadosActivos();
+            var empleadosDto = empleados.Select(e => new EmpleadoDTO
+            {
+                id = e.id,
+                nombre = e.nombre,
+                apellido = e.apellido,
+                correo = e.correo,
+                edad = e.edad,
+                genero = e.genero,
+                activo = e.activo,
+                created_at = e.created_at,
+                updated_at = e.updated_at,
+                usuario = e.Usuario != null ? e.Usuario.usuario : null 
+            });
+            return empleadosDto;
         }
 
         public async Task<Empleado> PostEmpleados(Empleado empleado)
@@ -46,10 +97,7 @@ namespace Inventario.services
                 return null;
             }
 
-            empleadoFound.nombre = empleado.nombre ?? empleadoFound.nombre;
-            empleadoFound.correo = empleado.correo ?? empleadoFound.correo;
-            empleadoFound.edad = empleado.edad ?? empleadoFound.edad;
-            empleadoFound.apellido = empleado.apellido ?? empleadoFound.apellido;
+            empleadoFound.ActualizarPropiedades(empleado);
             empleadoFound.activo = empleado.activo;
             empleadoFound.updated_at = _AsinacionesService.GetCurrentDateTime();
 

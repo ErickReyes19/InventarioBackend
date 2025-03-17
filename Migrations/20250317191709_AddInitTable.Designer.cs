@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Inventario.Migrations
 {
     [DbContext(typeof(DbContextInventario))]
-    [Migration("20250315152029_AddInitTable")]
+    [Migration("20250317191709_AddInitTable")]
     partial class AddInitTable
     {
         /// <inheritdoc />
@@ -72,10 +72,6 @@ namespace Inventario.Migrations
                         .HasMaxLength(36)
                         .HasColumnType("varchar(36)");
 
-                    b.Property<string>("RoleId")
-                        .IsRequired()
-                        .HasColumnType("varchar(255)");
-
                     b.Property<ulong>("activo")
                         .HasColumnType("bit");
 
@@ -86,9 +82,15 @@ namespace Inventario.Migrations
                     b.Property<DateTime?>("created_at")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("empleado_id")
+                        .IsRequired()
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
+
                     b.Property<string>("role_id")
                         .IsRequired()
-                        .HasColumnType("longtext");
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
 
                     b.Property<DateTime?>("updated_at")
                         .HasColumnType("datetime(6)");
@@ -100,7 +102,10 @@ namespace Inventario.Migrations
 
                     b.HasKey("id");
 
-                    b.HasIndex("RoleId");
+                    b.HasIndex("empleado_id")
+                        .IsUnique();
+
+                    b.HasIndex("role_id");
 
                     b.ToTable("Usuarios");
                 });
@@ -176,15 +181,15 @@ namespace Inventario.Migrations
 
             modelBuilder.Entity("Inventario.Models.Usuario", b =>
                 {
-                    b.HasOne("Role", "Role")
-                        .WithMany("Usuarios")
-                        .HasForeignKey("RoleId")
+                    b.HasOne("Inventario.Models.Empleado", "Empleado")
+                        .WithOne("Usuario")
+                        .HasForeignKey("Inventario.Models.Usuario", "empleado_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Inventario.Models.Empleado", "Empleado")
-                        .WithOne("Usuario")
-                        .HasForeignKey("Inventario.Models.Usuario", "id")
+                    b.HasOne("Role", "Role")
+                        .WithMany("Usuarios")
+                        .HasForeignKey("role_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -214,8 +219,7 @@ namespace Inventario.Migrations
 
             modelBuilder.Entity("Inventario.Models.Empleado", b =>
                 {
-                    b.Navigation("Usuario")
-                        .IsRequired();
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("Permiso", b =>

@@ -16,11 +16,11 @@ namespace Inventario.Repositories
         }
         public async Task<IEnumerable<Empleado>> GetEmpleados()
         {
-            return await _dbContextInventario.Empleados.ToListAsync();
+            return await _dbContextInventario.Empleados.Include("Usuario").ToListAsync();
         }        
         public async Task<Empleado> GetEmpleadoById(string id)
         {
-            return await _dbContextInventario.Empleados.Where(e => e.id == id).FirstAsync();
+            return await _dbContextInventario.Empleados.Where(e => e.id == id).FirstOrDefaultAsync();
         }
 
         public async Task<IEnumerable<Empleado>> GetEmpleadosActivos()
@@ -36,12 +36,9 @@ namespace Inventario.Repositories
         }
         public async Task<Empleado> PutEmpleados(string id, Empleado empleado)
         {
-            var existingEmpleado = await _dbContextInventario.Empleados.FindAsync(id);
+            var existingEmpleado = await _dbContextInventario.Empleados.Where(u => u.id == id)
+                .FirstOrDefaultAsync(); 
 
-            if (existingEmpleado == null)
-            {
-                return null;
-            }
 
             _dbContextInventario.Entry(existingEmpleado).CurrentValues.SetValues(empleado);
 

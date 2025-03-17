@@ -1,4 +1,5 @@
 ﻿using Inventario.interfaces;
+using Inventario.Models;
 
 namespace Inventario.services
 
@@ -12,6 +13,15 @@ namespace Inventario.services
         public DateTime GetCurrentDateTime()
         {
             return DateTime.Now;
+        }
+        public string EncriptPassword(string password)
+        {
+            var encriptPassword = BCrypt.Net.BCrypt.HashPassword(password);
+            return encriptPassword;
+        }
+        public bool VerifyPassword(string password, string hashedPassword)
+        {
+            return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
         }
     }
 

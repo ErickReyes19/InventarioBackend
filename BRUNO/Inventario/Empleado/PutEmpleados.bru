@@ -1,11 +1,11 @@
 meta {
-  name: PuEmpleados
+  name: PutEmpleados
   type: http
   seq: 4
 }
 
 put {
-  url: {{url}}/api/Empleado/15335a35-2ef8-42bd-8ee4-731734a86188
+  url: {{url}}/api/Empleado/038b7bf8-eeb7-4d71-acb6-97e70d4a7647
   body: json
   auth: none
 }
@@ -13,10 +13,11 @@ put {
 body:json {
   {
     "nombre": "Juana",
-    "apellido": "asdasd",
+    "apellido": "reyes",
     "correo":"asdew@gmail.com",
     "telefono": "22334455",
     "edad": 28,
-    "genero": "asdasdasd"
+    "genero": "asdasdasd",
+    "activo":true
   }
 }

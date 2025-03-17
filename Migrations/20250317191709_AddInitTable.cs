@@ -118,24 +118,24 @@ namespace Inventario.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     created_at = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     updated_at = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    role_id = table.Column<string>(type: "longtext", nullable: false)
+                    empleado_id = table.Column<string>(type: "varchar(36)", maxLength: 36, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    activo = table.Column<ulong>(type: "bit", nullable: false),
-                    RoleId = table.Column<string>(type: "varchar(255)", nullable: false)
-                        .Annotation("MySql:CharSet", "utf8mb4")
+                    role_id = table.Column<string>(type: "varchar(36)", maxLength: 36, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    activo = table.Column<ulong>(type: "bit", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Usuarios", x => x.id);
                     table.ForeignKey(
-                        name: "FK_Usuarios_Empleados_id",
-                        column: x => x.id,
+                        name: "FK_Usuarios_Empleados_empleado_id",
+                        column: x => x.empleado_id,
                         principalTable: "Empleados",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Usuarios_Roles_RoleId",
-                        column: x => x.RoleId,
+                        name: "FK_Usuarios_Roles_role_id",
+                        column: x => x.role_id,
                         principalTable: "Roles",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -148,9 +148,15 @@ namespace Inventario.Migrations
                 column: "PermisoId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Usuarios_RoleId",
+                name: "IX_Usuarios_empleado_id",
                 table: "Usuarios",
-                column: "RoleId");
+                column: "empleado_id",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Usuarios_role_id",
+                table: "Usuarios",
+                column: "role_id");
         }
 
         /// <inheritdoc />

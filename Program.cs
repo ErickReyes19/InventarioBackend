@@ -125,6 +125,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseMiddleware<ExceptionMiddleware>();
 
 // Aplicar Rate Limiting Middleware antes de la autenticación y autorización
 app.UseIpRateLimiting(); // Aplica el rate limiting en todas las peticiones
