@@ -38,14 +38,33 @@ namespace Inventario.Controllers
             if (roles == null || !roles.Any())
                 return NotFound("No se encontraron roles.");
             return Ok(roles);
-        }          
-        
+        }
+
         [HttpPost("{idRol}/asignar-permisos")]
-        public async Task<ActionResult> AsignarPermisos(string idRol, List<string>idsPermisos)
+        public async Task<ActionResult> AsignarPermisos(string idRol, List<string> idsPermisos)
         {
-            await _rolService.AssignPermissionsToRole(idRol, idsPermisos);
-            return Ok("REcio");
-        }        
+            try
+            {
+                bool success = await _rolService.AssignPermissionsToRole(idRol, idsPermisos);
+                if (success)
+                {
+                    return Ok("Permisos asignados correctamente.");
+                }
+                else
+                {
+                    return BadRequest("No se pudieron asignar todos los permisos.");
+                }
+            }
+            catch (InvalidOperationException ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Error interno del servidor.", details = ex.Message });
+            }
+        }
+
 
         [HttpPost]
         public async Task<ActionResult<RolDto>> CreateRoles(Role rol)

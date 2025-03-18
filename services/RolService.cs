@@ -112,9 +112,9 @@ namespace Inventario.services
                 UpdatedAt = rolFound.UpdatedAt
             };
         }        
-        public async Task AssignPermissionsToRole(string id, List<string> ids)
+        public async Task<bool> AssignPermissionsToRole(string id, List<string> ids)
         {
-            await _rolrepository.AssignPermissions(id, ids);
+            return await _rolrepository.AssignPermissions(id, ids);
         }
 
     }

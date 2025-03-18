@@ -49,19 +49,37 @@ namespace Inventario.repositories
 
             return existingRol;
         }
-        public async Task AssignPermissions(string roleId, List<string> id)
+        public async Task<bool> AssignPermissions(string roleId, List<string> ids)
         {
-            var role = await _dbContextInventario.Roles.Include(r => r.RolePermisos).FirstOrDefaultAsync(r => r.Id == roleId);
+            // Obtener el rol, incluyendo los permisos asociados
+            var role = await _dbContextInventario.Roles
+                .Include(r => r.RolePermisos)
+                .FirstOrDefaultAsync(r => r.Id == roleId);
 
+            if (role == null)
+                throw new InvalidOperationException("Role not found.");
 
-            if (role == null) throw new InvalidOperationException("Role not found.");
+            var existingPermissions = _dbContextInventario.RolePermiso
+                .Where(rp => rp.RolId == roleId);
+            _dbContextInventario.RolePermiso.RemoveRange(existingPermissions);
 
-            var permisos = await _dbContextInventario.Permisos.Where(p => id.Contains(p.Id)).ToListAsync();
-            var rolePermisos = permisos.Select(p => new RolePermiso { RolId = roleId, PermisoId = p.Id }).ToList();
+            var permisos = await _dbContextInventario.Permisos
+                .Where(p => ids.Contains(p.Id))
+                .ToListAsync();
+
+            var rolePermisos = permisos.Select(p => new RolePermiso
+            {
+                RolId = roleId,
+                PermisoId = p.Id
+            }).ToList();
 
             _dbContextInventario.RolePermiso.AddRange(rolePermisos);
-            await _dbContextInventario.SaveChangesAsync();
 
+            var result = await _dbContextInventario.SaveChangesAsync();
+
+            return result > 0;
         }
+
+
     }
 }

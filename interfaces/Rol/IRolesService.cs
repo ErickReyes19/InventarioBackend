@@ -9,6 +9,6 @@ namespace Inventario.interfaces.Rol
         Task<RolDto> GetRolById(string id);
         Task<RolDto> PostRol(Role rol);
         Task<RolDto> PutRol(Role rol, string id);
-        Task AssignPermissionsToRole(string roleId, List<string> ids);
+        Task<bool> AssignPermissionsToRole(string roleId, List<string> ids);
     }
 }
