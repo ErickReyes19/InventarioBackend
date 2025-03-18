@@ -9,13 +9,12 @@ using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Configuration.AddEnvironmentVariables();
 
 
 builder.WebHost.ConfigureKestrel(options =>
 {
-    options.ListenAnyIP(80);  // Kestrel escuchará en el puerto 80
+    options.ListenAnyIP(80); 
 });
 
 //var mysqlHost = Environment.GetEnvironmentVariable("MYSQL_HOST");
@@ -45,16 +44,13 @@ CultureInfo.DefaultThreadCurrentUICulture = new CultureInfo("es-HN");
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 
-// Configurar DbContext para MySQL
 builder.Services.AddDbContext<DbContextInventario>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString))
 );
 
 
 
-// Configurar autenticación JWT
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
     {
@@ -73,23 +69,20 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowSpecificOrigin", policy =>
     {
-        policy.WithOrigins("https://carwash-front-end.vercel.app") // Reemplaza con el origen de tu frontend
+        policy.WithOrigins("https://carwash-front-end.vercel.app") 
               .AllowAnyMethod()
               .AllowAnyHeader()
-              .AllowCredentials(); // Permite el uso de credenciales
+              .AllowCredentials();
     });
 });
 
 builder.Services.AddAuthorization();
 
-// Configuración de rate limiting
-
-// Configuración de rate limiting desde el appsettings.json
-builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateLimiting"));  // Cargar las reglas de rate limiting desde el archivo de configuración
-builder.Services.AddInMemoryRateLimiting();  // Usar almacenamiento en memoria para las reglas de rate limiting
-builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();  // Configuración del rate limit
-builder.Services.AddMemoryCache();  // Habilitar almacenamiento en caché para los contadores de rate limiting
-builder.Services.AddHttpContextAccessor(); // Acceso al contexto HTTP para evaluar las peticiones
+builder.Services.Configure<IpRateLimitOptions>(builder.Configuration.GetSection("IpRateLimiting"));  
+builder.Services.AddInMemoryRateLimiting();
+builder.Services.AddSingleton<IRateLimitConfiguration, RateLimitConfiguration>();
+builder.Services.AddMemoryCache();
+builder.Services.AddHttpContextAccessor(); 
 builder.Services.AddServices();
 
 var app = builder.Build();
@@ -101,7 +94,6 @@ using (var scope = app.Services.CreateScope())
 
     try
     {
-        // Ejecutar las migraciones pendientes en la base de datos
         Console.WriteLine("Aplicando migraciones...");
         context.Database.Migrate();
         Console.WriteLine("Migraciones aplicadas correctamente.");
@@ -117,7 +109,6 @@ using (var scope = app.Services.CreateScope())
     }
 }
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -127,10 +118,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseMiddleware<ExceptionMiddleware>();
 
-// Aplicar Rate Limiting Middleware antes de la autenticación y autorización
-app.UseIpRateLimiting(); // Aplica el rate limiting en todas las peticiones
+app.UseIpRateLimiting();
 
-// Habilitar autenticación y autorización
 app.UseAuthentication();
 app.UseAuthorization();
 

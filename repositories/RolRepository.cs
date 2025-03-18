@@ -22,11 +22,12 @@ namespace Inventario.repositories
         }
         public async Task<Role> GetRolesById(string id)
         {
-            return await _dbContextInventario.Roles.Where(r => id == id).FirstOrDefaultAsync();
+            return await _dbContextInventario.Roles.Where(r => r.Id == id).FirstOrDefaultAsync();
         }
         public async Task<Role> PostRol(Role rol)
         {
             var rolCreate = await _dbContextInventario.Roles.AddAsync(rol);
+            await _dbContextInventario.SaveChangesAsync();
             return rolCreate.Entity;
         }
         public async Task<Role> PutRol(Role rol, string id)

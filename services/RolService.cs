@@ -1,6 +1,7 @@
 ﻿using Inventario.interfaces;
 using Inventario.interfaces.Rol;
 using Inventario.models.Rol;
+using Inventario.Utils;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -90,6 +91,30 @@ namespace Inventario.services
                 UpdatedAt = rol.UpdatedAt
             };
             return rolDto;
+        }        
+        public async Task<RolDto> PutRol(Role rol, string id)
+        {
+            var rolFound = await _rolrepository.GetRolesById(id);
+            if (rolFound == null)
+            {
+                return null;
+            }
+            rolFound.ActualizarPropiedades(rol);
+            rolFound.UpdatedAt = _AsinacionesService.GetCurrentDateTime();
+            await _rolrepository.PutRol(rolFound, id);
+            return new RolDto
+            {
+                Nombre = rolFound.Nombre,
+                Descripcion = rolFound.Descripcion,
+                Activo = rolFound.Activo,
+                Id = rolFound.Id,
+                CreatedAt = rolFound.CreatedAt,
+                UpdatedAt = rolFound.UpdatedAt
+            };
+        }        
+        public async Task AssignPermissionsToRole(string id, List<string> ids)
+        {
+            await _rolrepository.AssignPermissions(id, ids);
         }
 
     }
