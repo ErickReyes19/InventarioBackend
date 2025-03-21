@@ -23,16 +23,14 @@ namespace Inventario.services
 
             var empleadosDto = empleados.Select(e => new EmpleadoDTO
             {
-                id = e.id,
+                id = e.id!,
                 nombre = e.nombre,
                 apellido = e.apellido,
                 correo = e.correo,
                 edad = e.edad,
                 genero = e.genero,
                 activo = e.activo,
-                created_at = e.created_at,
-                updated_at = e.updated_at,
-                usuario = e.Usuario != null ? e.Usuario.usuario : null // Extrae solo el nombre de usuario
+                usuario = e.Usuario?.usuario ?? ""
             });
 
             return empleadosDto;
@@ -45,16 +43,14 @@ namespace Inventario.services
 
             var empleadoDto = new EmpleadoDTO
             {
-                id = empleado.id,
+                id = empleado.id!,
                 nombre = empleado.nombre,
                 apellido = empleado.apellido,
                 correo = empleado.correo,
                 edad = empleado.edad,
                 genero = empleado.genero,
                 activo = empleado.activo,
-                created_at = empleado.created_at,
-                updated_at = empleado.updated_at,
-                usuario = empleado.Usuario?.usuario // Manejo seguro de null
+                usuario = empleado.Usuario?.usuario ?? ""
             };
 
             return empleadoDto;
@@ -66,29 +62,43 @@ namespace Inventario.services
             var empleados = await _empleadoRepository.GetEmpleadosActivos();
             var empleadosDto = empleados.Select(e => new EmpleadoDTO
             {
-                id = e.id,
+                id = e.id!,
                 nombre = e.nombre,
                 apellido = e.apellido,
                 correo = e.correo,
                 edad = e.edad,
                 genero = e.genero,
                 activo = e.activo,
-                created_at = e.created_at,
-                updated_at = e.updated_at,
-                usuario = e.Usuario != null ? e.Usuario.usuario : null 
+                usuario = e.Usuario?.usuario ?? ""
             });
             return empleadosDto;
         }
 
-        public async Task<Empleado> PostEmpleados(Empleado empleado)
+        public async Task<EmpleadoDTO> PostEmpleados(Empleado empleado)
         {
+            var token = _AsinacionesService.GetTokenFromHeader();
             empleado.id = _AsinacionesService.GenerateNewId();
             empleado.created_at = _AsinacionesService.GetCurrentDateTime();
             empleado.updated_at = _AsinacionesService.GetCurrentDateTime();
-            return await _empleadoRepository.PostEmpleados(empleado);
+            empleado.adicionado_por = _AsinacionesService.GetClaimValue(token!, "User") ?? "Sistema";
+            empleado.modificado_por = _AsinacionesService.GetClaimValue(token!, "User") ?? "Sistema";
+            await _empleadoRepository.PostEmpleados(empleado);
+            return new EmpleadoDTO
+            {
+                id = empleado.id,
+                nombre = empleado.nombre,
+                apellido = empleado.apellido,
+                correo = empleado.correo,
+                genero = empleado.genero,
+                edad = empleado.edad,
+                activo = empleado.activo,
+                usuario = empleado.Usuario?.usuario ?? ""
+
+            };
+
         }
 
-        public async Task<Empleado> PutEmpleados(string id, Empleado empleado)
+        public async Task<EmpleadoDTO> PutEmpleados(string id, Empleado empleado)
         {
             var empleadoFound = await _empleadoRepository.GetEmpleadoById(id);
 
@@ -96,12 +106,25 @@ namespace Inventario.services
             {
                 return null;
             }
-
+            var token = _AsinacionesService.GetTokenFromHeader();
             empleadoFound.ActualizarPropiedades(empleado);
             empleadoFound.activo = empleado.activo;
             empleadoFound.updated_at = _AsinacionesService.GetCurrentDateTime();
+            empleadoFound.modificado_por = _AsinacionesService.GetClaimValue(token!, "User") ?? "Sistema";
 
-            return await _empleadoRepository.PutEmpleados(id, empleadoFound);
+            await _empleadoRepository.PutEmpleados(id, empleadoFound);
+            return new EmpleadoDTO
+            {
+                id = empleadoFound.id!,
+                nombre = empleadoFound.nombre,
+                apellido = empleadoFound.apellido,
+                correo = empleadoFound.correo,
+                genero = empleadoFound.genero,
+                edad = empleadoFound.edad,
+                activo = empleadoFound.activo,
+                usuario = empleadoFound.Usuario?.usuario ?? ""
+
+            };
         }
 
     }

@@ -7,7 +7,7 @@ namespace Inventario.interfaces.IEmpleado
         Task<IEnumerable<EmpleadoDTO>> GetEmpleados();
         Task<IEnumerable<EmpleadoDTO>> GetEmpleadosActivos();
         Task<EmpleadoDTO> GetEmpleadoById(string id);
-        Task<Empleado> PostEmpleados(Empleado empleado);
-        Task<Empleado> PutEmpleados(string id, Empleado empleado);
+        Task<EmpleadoDTO> PostEmpleados(Empleado empleado);
+        Task<EmpleadoDTO> PutEmpleados(string id, Empleado empleado);
     }
 }

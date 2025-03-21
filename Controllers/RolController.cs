@@ -69,6 +69,7 @@ namespace Inventario.Controllers
         [HttpPost]
         public async Task<ActionResult<RolDto>> CreateRoles(Role rol)
         {
+
             var rolCreate = await _rolService.PostRol(rol);
             return Ok(rolCreate);
         }        

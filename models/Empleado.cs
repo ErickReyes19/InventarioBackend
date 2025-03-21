@@ -29,13 +29,11 @@ public partial class Empleado
     [Required]
     [Column(TypeName = "bit")]
     public bool activo { get; set; } = true;
-
     public DateTime? created_at { get; set; }
     public DateTime? updated_at { get; set; }
 
-
+    public string? adicionado_por { get; set; }
+    public string? modificado_por { get; set; }
     public Usuario? Usuario { get; set; }
-
-
 
 }

@@ -7,6 +7,8 @@
         string EncriptPassword(string password);
         bool VerifyPassword(string password, string hashedPassword);
         string GenerateJwtToken<T>(T data);
+        string? GetClaimValue(string token, string claimType);
+        string? GetTokenFromHeader();
     }
 
 }

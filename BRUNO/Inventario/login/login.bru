@@ -4,10 +4,17 @@ meta {
   seq: 1
 }
 
-get {
-  url: 
-  body: none
+post {
+  url: {{url}}/api/Login
+  body: json
   auth: none
+}
+
+body:json {
+  {
+    "username": "Juan.Reyes",
+    "password": "Juan.Reyes"
+  }
 }
 
 script:post-response {

@@ -3,17 +3,20 @@ using System.Security.Claims;
 using System.Text;
 using Inventario.interfaces;
 using Inventario.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Inventario.services
 
 {
-    public class AsingacionesService: IAsignaciones
+    public class AsingacionesService : IAsignaciones
     {
         private readonly IConfiguration _configuration;
-        public AsingacionesService(IConfiguration configuration)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+        public AsingacionesService(IConfiguration configuration, IHttpContextAccessor httpContextAccessor)
         {
             _configuration = configuration;
+            _httpContextAccessor = httpContextAccessor;
         }
         public string GenerateNewId()
         {
@@ -61,6 +64,24 @@ namespace Inventario.services
             );
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+        public string? GetClaimValue(string token, string claimType)
+        {
+            var handler = new JwtSecurityTokenHandler();
+
+            if (!handler.CanReadToken(token))
+                return null;
+
+            var jwtToken = handler.ReadJwtToken(token);
+            var claim = jwtToken.Claims.FirstOrDefault(c => c.Type == claimType);
+
+            return claim?.Value;
+        }
+
+        public string? GetTokenFromHeader()
+        {
+            return _httpContextAccessor.HttpContext?.Request.Headers["Authorization"]
+                .FirstOrDefault()?.Split(" ").Last();
         }
     }
 

@@ -32,23 +32,11 @@ namespace Inventario.repositories
         }
         public async Task<Role> PutRol(Role rol, string id)
         {
-            var existingRol = await _dbContextInventario.Roles.FindAsync(id);
-
-            if (existingRol == null)
-            {
-                throw new KeyNotFoundException("Rol no encontrado.");
-            }
-            _dbContextInventario.Entry(existingRol).CurrentValues.SetValues(rol);
-
-            var result = await _dbContextInventario.SaveChangesAsync();
-
-            if (result == 0)
-            {
-                throw new InvalidOperationException("No se pudo actualizar el usuario.");
-            }
-
-            return existingRol;
+            _dbContextInventario.Entry(rol).State = EntityState.Modified;
+            await _dbContextInventario.SaveChangesAsync();
+            return rol;
         }
+
         public async Task<bool> AssignPermissions(string roleId, List<string> ids)
         {
             // Obtener el rol, incluyendo los permisos asociados

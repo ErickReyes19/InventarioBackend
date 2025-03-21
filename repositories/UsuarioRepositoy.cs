@@ -25,47 +25,29 @@ namespace Inventario.repositories
 
         public async Task<Usuario> GetUsuarioById(string id)
         {
-            var usuario = await _dbContextInventario.Usuarios
-                .Include("Empleado")
-                .Include("Role")
-                .Where(u => u.id == id)
-                .FirstOrDefaultAsync(); // Usa FirstOrDefaultAsync en lugar de FirstAsync
-
-            if (usuario == null)
-            {
-                throw new KeyNotFoundException("Usuario no encontrado."); // O manejar de otra forma
-            }
-
+            var usuario = await _dbContextInventario.Usuarios.Include("Empleado").Include("Role").Where(u => u.id == id).FirstOrDefaultAsync(); 
             return usuario;
         }
 
         public async Task<Usuario>PostUsuario(Usuario usuario)
         {
-            var usuariocreate = await _dbContextInventario.Usuarios.AddAsync(usuario);
+            var usuarioCreate = await _dbContextInventario.Usuarios.AddAsync(usuario);
             await _dbContextInventario.SaveChangesAsync();
-            return usuariocreate.Entity;
+
+            var usuarioWithIncludes = await _dbContextInventario.Usuarios.Include(u => u.Role)
+                .Include(u => u.Empleado).FirstOrDefaultAsync(u => u.id == usuario.id);
+            return usuarioWithIncludes!;
         }
 
-        public async Task<Usuario> PutUsuario(Usuario usuario, string id)
+        public async Task<Usuario> PutUsuario(Usuario usuario)
         {
-            var existingUsuario = await _dbContextInventario.Usuarios.FindAsync(id);
+            _dbContextInventario.Entry(usuario).State = EntityState.Modified;
+            await _dbContextInventario.SaveChangesAsync();
 
-            if (existingUsuario == null)
-            {
-                throw new KeyNotFoundException("Usuario no encontrado.");
-            }
-
-            _dbContextInventario.Entry(existingUsuario).CurrentValues.SetValues(usuario);
-
-            var result = await _dbContextInventario.SaveChangesAsync();
-
-            if (result == 0)
-            {
-                throw new InvalidOperationException("No se pudo actualizar el usuario.");
-            }
-
-            return existingUsuario;
+            return await _dbContextInventario.Usuarios.Include(u => u.Role).Include(u => u.Empleado).FirstOrDefaultAsync(u => u.id == usuario.id);
         }
+
+
 
 
 

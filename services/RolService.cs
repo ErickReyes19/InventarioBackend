@@ -22,16 +22,14 @@ namespace Inventario.services
             var roles = await _rolrepository.GetRoles();
             if (roles == null)
             {
-                return null;
+                throw new KeyNotFoundException("Lista de roles Vacia.");
             }
             var rolesDto = roles.Select(r => new RolDto
             {
                 Nombre = r.Nombre,
                 Descripcion = r.Descripcion,
                 Activo = r.Activo,
-                Id = r.Id,
-                CreatedAt = r.CreatedAt,
-                UpdatedAt = r.UpdatedAt  
+                Id = r.Id!  
             });
             return rolesDto;
         }
@@ -40,16 +38,14 @@ namespace Inventario.services
             var roles = await _rolrepository.GetRolesActivos();
             if (roles == null)
             {
-                return null;
+                throw new KeyNotFoundException("Lista de roles Vacia.");
             }
             var rolesDto = roles.Select(r => new RolDto
             {
                 Nombre = r.Nombre,
                 Descripcion = r.Descripcion,
                 Activo = r.Activo,
-                Id = r.Id,
-                CreatedAt = r.CreatedAt,
-                UpdatedAt = r.UpdatedAt  
+                Id = r.Id!,  
             });
             return rolesDto;
         }  
@@ -59,27 +55,27 @@ namespace Inventario.services
             var r = await _rolrepository.GetRolesById(id);
             if (r == null)
             {
-                return null;
+                throw new KeyNotFoundException("Rol no encontrado.");
             }
             var rolesDto = new RolDto
             {
                 Nombre = r.Nombre,
                 Descripcion = r.Descripcion,
                 Activo = r.Activo,
-                Id = r.Id,
-                CreatedAt = r.CreatedAt,
-                UpdatedAt = r.UpdatedAt  
+                Id = r.Id!,
             };
             return rolesDto;
         }
                 
         public async Task<RolDto> PostRol(Role rol)
         {
-            
+            var token = _AsinacionesService.GetTokenFromHeader();
             rol.Id = _AsinacionesService.GenerateNewId();
             rol.Activo = true;
             rol.CreatedAt = _AsinacionesService.GetCurrentDateTime();
             rol.UpdatedAt = _AsinacionesService.GetCurrentDateTime();
+            rol.adicionado_por = _AsinacionesService.GetClaimValue(token!, "User") ?? "Sistema";
+            rol.modificado_por = _AsinacionesService.GetClaimValue(token!, "User") ?? "Sistema";
             await _rolrepository.PostRol(rol);
             var rolDto = new RolDto
             {
@@ -87,29 +83,28 @@ namespace Inventario.services
                 Descripcion= rol.Descripcion,
                 Activo = rol.Activo,
                 Id = rol.Id,
-                CreatedAt = rol.CreatedAt,
-                UpdatedAt = rol.UpdatedAt
             };
             return rolDto;
         }        
         public async Task<RolDto> PutRol(Role rol, string id)
         {
+            var token = _AsinacionesService.GetTokenFromHeader();
             var rolFound = await _rolrepository.GetRolesById(id);
             if (rolFound == null)
             {
-                return null;
+                throw new KeyNotFoundException("Rol no encontrado.");
             }
             rolFound.ActualizarPropiedades(rol);
             rolFound.UpdatedAt = _AsinacionesService.GetCurrentDateTime();
+            rolFound.modificado_por = _AsinacionesService.GetClaimValue(token!, "User") ?? "Sistema";
+            rolFound.Activo = rol.Activo;
             await _rolrepository.PutRol(rolFound, id);
             return new RolDto
             {
                 Nombre = rolFound.Nombre,
                 Descripcion = rolFound.Descripcion,
                 Activo = rolFound.Activo,
-                Id = rolFound.Id,
-                CreatedAt = rolFound.CreatedAt,
-                UpdatedAt = rolFound.UpdatedAt
+                Id = rolFound.Id!,
             };
         }        
         public async Task<bool> AssignPermissionsToRole(string id, List<string> ids)

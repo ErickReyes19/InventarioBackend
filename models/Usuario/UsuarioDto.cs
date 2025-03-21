@@ -11,7 +11,5 @@ namespace Inventario.models.Usuario
         public string rolId { get; set; }
         public string empleado { get; set; }
         public string empleadoId { get; set; }
-        public DateTime? created_at { get; set; }
-        public DateTime? updated_at { get; set; }
     }
 }

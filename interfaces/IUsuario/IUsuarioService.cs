@@ -9,7 +9,7 @@ namespace Inventario.interfaces.IUsuario
         Task<IEnumerable<UsuarioDto>> GetUsuarios();
         Task<IEnumerable<UsuarioDto>> GetUsuariosActivos();
         Task<UsuarioDto> GetUsuarioById(string id);
-        Task<Usuario> PostUsuario(Usuario usuario);
+        Task<UsuarioDto> PostUsuario(Usuario usuario);
         Task<UsuarioDto> PutUsuario(string id,Usuario usuario);
     }
 }

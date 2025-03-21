@@ -35,4 +35,7 @@ public partial class Usuario
 
     [ForeignKey("empleado_id")]
     public Empleado? Empleado { get; set; }
+
+    public string? adicionado_por { get; set; }
+    public string? modificado_por { get; set; }
 }

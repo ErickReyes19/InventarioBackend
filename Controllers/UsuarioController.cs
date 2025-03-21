@@ -1,4 +1,5 @@
 ﻿using Inventario.interfaces.IUsuario;
+using Inventario.models.Usuario;
 using Inventario.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -56,13 +57,21 @@ namespace Inventario.Controllers
         }
 
         [HttpPut("{id}")]
-        public async Task<ActionResult<Usuario>> UpdateUsuarios(string id, Usuario usuario)
+        public async Task<ActionResult<UsuarioDto>> UpdateUsuarios(string id, Usuario usuario)
         {
+            try
+            {
+                // Llamada al Service
+                var usuarioActualizado = await _usuarioService.PutUsuario(id, usuario);
 
-                var usuarios = await _usuarioService.PutUsuario(id, usuario);
-
-                return Ok(usuarios);
-
+                // Si todo sale bien, responde con un 200 OK
+                return Ok(usuarioActualizado);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
+
     }
 }

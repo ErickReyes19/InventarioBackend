@@ -31,7 +31,11 @@ namespace Inventario.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     activo = table.Column<ulong>(type: "bit", nullable: false),
                     created_at = table.Column<DateTime>(type: "datetime(6)", nullable: true),
-                    updated_at = table.Column<DateTime>(type: "datetime(6)", nullable: true)
+                    updated_at = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    adicionado_por = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    modificado_por = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {
@@ -63,7 +67,7 @@ namespace Inventario.Migrations
                 name: "Roles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "varchar(255)", nullable: false)
+                    Id = table.Column<string>(type: "varchar(36)", maxLength: 36, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Nombre = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -71,6 +75,10 @@ namespace Inventario.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     CreatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
                     UpdatedAt = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    adicionado_por = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    modificado_por = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
                     Activo = table.Column<bool>(type: "tinyint(1)", nullable: false)
                 },
                 constraints: table =>
@@ -83,7 +91,7 @@ namespace Inventario.Migrations
                 name: "RolePermiso",
                 columns: table => new
                 {
-                    RolId = table.Column<string>(type: "varchar(255)", nullable: false)
+                    RolId = table.Column<string>(type: "varchar(36)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     PermisoId = table.Column<string>(type: "varchar(255)", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4")
@@ -122,7 +130,11 @@ namespace Inventario.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     role_id = table.Column<string>(type: "varchar(36)", maxLength: 36, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    activo = table.Column<ulong>(type: "bit", nullable: false)
+                    activo = table.Column<ulong>(type: "bit", nullable: false),
+                    adicionado_por = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    modificado_por = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
                 },
                 constraints: table =>
                 {

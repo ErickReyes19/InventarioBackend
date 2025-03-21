@@ -1,12 +1,15 @@
 ﻿using Inventario.interfaces.IEmpleado;
 using Inventario.Models;
 using Inventario.services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inventario.Controllers
 {
+    //[Authorize]
     [Route("api/[controller]")]
     [ApiController]
+
     public class EmpleadoController : ControllerBase
     {
         private readonly IEmpleadoService _empleadoService;
@@ -33,7 +36,7 @@ namespace Inventario.Controllers
         public async Task<ActionResult<Empleado>> CreateEmpleados(Empleado empleado)
         {
 
-                var empleadoCreate = await _empleadoService.PostEmpleados(empleado);
+            var empleadoCreate = await _empleadoService.PostEmpleados(empleado);
 
                 if (empleadoCreate == null)
                     return NotFound("No se encontraron empleados.");
@@ -46,8 +49,7 @@ namespace Inventario.Controllers
         public async Task<ActionResult<Empleado>> UpdateEmpleados(Empleado empleado, string id)
         {
 
-
-                var empleadoCreate = await _empleadoService.PutEmpleados(id,empleado);
+            var empleadoCreate = await _empleadoService.PutEmpleados(id,empleado);
 
                 if (empleadoCreate == null)
                     return NotFound("No se encontraron empleados.");

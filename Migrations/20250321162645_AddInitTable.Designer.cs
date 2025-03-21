@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Inventario.Migrations
 {
     [DbContext(typeof(DbContextInventario))]
-    [Migration("20250317191709_AddInitTable")]
+    [Migration("20250321162645_AddInitTable")]
     partial class AddInitTable
     {
         /// <inheritdoc />
@@ -34,6 +34,10 @@ namespace Inventario.Migrations
                     b.Property<ulong>("activo")
                         .HasColumnType("bit");
 
+                    b.Property<string>("adicionado_por")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("apellido")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -50,6 +54,10 @@ namespace Inventario.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("genero")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("modificado_por")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -75,6 +83,10 @@ namespace Inventario.Migrations
                     b.Property<ulong>("activo")
                         .HasColumnType("bit");
 
+                    b.Property<string>("adicionado_por")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<string>("contrasena")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -86,6 +98,10 @@ namespace Inventario.Migrations
                         .IsRequired()
                         .HasMaxLength(36)
                         .HasColumnType("varchar(36)");
+
+                    b.Property<string>("modificado_por")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("role_id")
                         .IsRequired()
@@ -140,7 +156,8 @@ namespace Inventario.Migrations
             modelBuilder.Entity("Role", b =>
                 {
                     b.Property<string>("Id")
-                        .HasColumnType("varchar(255)");
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
 
                     b.Property<bool>("Activo")
                         .HasColumnType("tinyint(1)");
@@ -159,6 +176,14 @@ namespace Inventario.Migrations
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("datetime(6)");
 
+                    b.Property<string>("adicionado_por")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("modificado_por")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
@@ -167,7 +192,7 @@ namespace Inventario.Migrations
             modelBuilder.Entity("RolePermiso", b =>
                 {
                     b.Property<string>("RolId")
-                        .HasColumnType("varchar(255)");
+                        .HasColumnType("varchar(36)");
 
                     b.Property<string>("PermisoId")
                         .HasColumnType("varchar(255)");

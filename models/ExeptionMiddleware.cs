@@ -42,10 +42,16 @@ public class ExceptionMiddleware
                 message = "Error: Ya existe un registro con los mismos datos únicos.";
                 break;
 
+            case KeyNotFoundException:
+                statusCode = (int)HttpStatusCode.NotFound;
+                message = "Recurso no encontrado.";
+                break;
+
             case DbUpdateException:
                 statusCode = (int)HttpStatusCode.InternalServerError;
                 message = "Error en la base de datos.";
                 break;
+
 
             case ArgumentException:
                 statusCode = (int)HttpStatusCode.BadRequest;

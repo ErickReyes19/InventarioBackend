@@ -7,15 +7,19 @@ meta {
 post {
   url: {{url}}/api/Empleado
   body: json
-  auth: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
 }
 
 body:json {
   {
-    "nombre": "Erick",
-    "apellido": "REyesss",
-    "correo":"erick.reyes@gmail.com",
-    "telefono": "22334455",
+    "nombre": "Karol",
+    "apellido": "aguirre",
+    "correo":"Karol.aguirre@gmail.com",
+    "telefono": "12341234",
     "edad": 26,
     "genero": "Masculino"
   }

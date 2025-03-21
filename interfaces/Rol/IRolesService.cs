@@ -1,4 +1,5 @@
-﻿using Inventario.models.Rol;
+﻿using System.Runtime.CompilerServices;
+using Inventario.models.Rol;
 
 namespace Inventario.interfaces.Rol
 {
