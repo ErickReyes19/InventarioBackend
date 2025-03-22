@@ -4,11 +4,19 @@ using AspNetCoreRateLimit;
 using Inventario.Models;
 using Inventario.services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
+var supportedCultures = new[] { new CultureInfo("es-ES") };
 
+var localizationOptions = new RequestLocalizationOptions
+{
+    DefaultRequestCulture = new RequestCulture("es-ES"),
+    SupportedCultures = supportedCultures,
+    SupportedUICultures = supportedCultures
+};
 builder.Configuration.AddEnvironmentVariables();
 
 
@@ -114,7 +122,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseRequestLocalization(localizationOptions);
 app.UseHttpsRedirection();
 app.UseMiddleware<ExceptionMiddleware>();
 

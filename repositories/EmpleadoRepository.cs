@@ -36,15 +36,12 @@ namespace Inventario.Repositories
         }
         public async Task<Empleado> PutEmpleados(string id, Empleado empleado)
         {
-            var existingEmpleado = await _dbContextInventario.Empleados.Where(u => u.id == id)
-                .FirstOrDefaultAsync(); 
 
-
-            _dbContextInventario.Entry(existingEmpleado).CurrentValues.SetValues(empleado);
+            _dbContextInventario.Entry(empleado).State = EntityState.Modified;
 
             await _dbContextInventario.SaveChangesAsync();
 
-            return existingEmpleado;
+            return empleado;
         }
 
     }

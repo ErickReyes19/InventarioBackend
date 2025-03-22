@@ -109,6 +109,11 @@ namespace Inventario.services
         }        
         public async Task<bool> AssignPermissionsToRole(string id, List<string> ids)
         {
+            var r = await _rolrepository.GetRolesById(id);
+            if (r == null)
+            {
+                throw new KeyNotFoundException("Rol no encontrado.");
+            }
             return await _rolrepository.AssignPermissions(id, ids);
         }
 

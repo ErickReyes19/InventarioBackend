@@ -7,7 +7,11 @@ meta {
 post {
   url: {{url}}/api/Rol/b1075145-e3dd-4154-a307-0ca90d44f451
   body: json
-  auth: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
 }
 
 body:json {

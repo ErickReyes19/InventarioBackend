@@ -1,12 +1,11 @@
 ﻿using Inventario.interfaces.IEmpleado;
 using Inventario.Models;
-using Inventario.services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Inventario.Controllers
 {
-    //[Authorize]
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
 
@@ -22,66 +21,78 @@ namespace Inventario.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Empleado>>> GetEmpleados()
         {
-
+            try
+            {
                 var empleados = await _empleadoService.GetEmpleados();
 
-                if (empleados == null || !empleados.Any())
-                    return NotFound("No se encontraron empleados.");
-
                 return Ok(empleados);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
 
-        }           
-        
+        }
+
         [HttpPost]
         public async Task<ActionResult<Empleado>> CreateEmpleados(Empleado empleado)
         {
-
-            var empleadoCreate = await _empleadoService.PostEmpleados(empleado);
-
-                if (empleadoCreate == null)
-                    return NotFound("No se encontraron empleados.");
-
+            try
+            {
+                var empleadoCreate = await _empleadoService.PostEmpleados(empleado);
                 return Ok(empleadoCreate);
-   
-        }            
-        
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+        }
+
         [HttpPut("{id}")]
         public async Task<ActionResult<Empleado>> UpdateEmpleados(Empleado empleado, string id)
         {
-
-            var empleadoCreate = await _empleadoService.PutEmpleados(id,empleado);
-
-                if (empleadoCreate == null)
-                    return NotFound("No se encontraron empleados.");
+            try
+            {
+                var empleadoCreate = await _empleadoService.PutEmpleados(id, empleado);
 
                 return Ok(empleadoCreate);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
 
-        }     
-        
+        }
+
         [HttpGet("{id}")]
         public async Task<ActionResult<Empleado>> EmpleadosById(string id)
         {
 
-
+            try
+            {
                 var empleadoCreate = await _empleadoService.GetEmpleadoById(id);
-
-                if (empleadoCreate == null)
-                    return NotFound("No se encontró el empleado.");
-
                 return Ok(empleadoCreate);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
 
-        }        
-        
+        }
+
         [HttpGet("activos")]
         public async Task<ActionResult<IEnumerable<Empleado>>> GetEmpleadosActivos()
         {
-
+            try
+            {
                 var empleados = await _empleadoService.GetEmpleadosActivos();
-
-                if (empleados == null || !empleados.Any())
-                    return NotFound("No se encontraron empleados.");
-
                 return Ok(empleados);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
 
         }
     }

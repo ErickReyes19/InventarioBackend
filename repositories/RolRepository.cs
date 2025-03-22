@@ -39,21 +39,11 @@ namespace Inventario.repositories
 
         public async Task<bool> AssignPermissions(string roleId, List<string> ids)
         {
-            // Obtener el rol, incluyendo los permisos asociados
-            var role = await _dbContextInventario.Roles
-                .Include(r => r.RolePermisos)
-                .FirstOrDefaultAsync(r => r.Id == roleId);
 
-            if (role == null)
-                throw new InvalidOperationException("Role not found.");
-
-            var existingPermissions = _dbContextInventario.RolePermiso
-                .Where(rp => rp.RolId == roleId);
+            var existingPermissions = _dbContextInventario.RolePermiso.Where(rp => rp.RolId == roleId);
             _dbContextInventario.RolePermiso.RemoveRange(existingPermissions);
 
-            var permisos = await _dbContextInventario.Permisos
-                .Where(p => ids.Contains(p.Id))
-                .ToListAsync();
+            var permisos = await _dbContextInventario.Permisos.Where(p => ids.Contains(p.Id)).ToListAsync();
 
             var rolePermisos = permisos.Select(p => new RolePermiso
             {

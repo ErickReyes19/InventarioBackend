@@ -7,5 +7,9 @@ meta {
 get {
   url: {{url}}/api/Empleado
   body: none
-  auth: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
 }

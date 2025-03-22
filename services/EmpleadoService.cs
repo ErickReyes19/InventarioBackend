@@ -20,7 +20,10 @@ namespace Inventario.services
         {
 
             var empleados = await _empleadoRepository.GetEmpleados();
-
+            if (empleados == null)
+            {
+                throw new KeyNotFoundException("Lista de empleados Vacia.");
+            }
             var empleadosDto = empleados.Select(e => new EmpleadoDTO
             {
                 id = e.id!,
@@ -39,7 +42,10 @@ namespace Inventario.services
         {
             var empleado = await _empleadoRepository.GetEmpleadoById(id);
 
-            if (empleado == null) return null;
+            if (empleado == null)
+            {
+                throw new KeyNotFoundException("Empleado no encontrado.");
+            }
 
             var empleadoDto = new EmpleadoDTO
             {
@@ -60,6 +66,10 @@ namespace Inventario.services
         public async Task<IEnumerable<EmpleadoDTO>> GetEmpleadosActivos()
         {
             var empleados = await _empleadoRepository.GetEmpleadosActivos();
+            if (empleados == null)
+            {
+                throw new KeyNotFoundException("Lista de empleados Vacia.");
+            }
             var empleadosDto = empleados.Select(e => new EmpleadoDTO
             {
                 id = e.id!,
@@ -104,7 +114,7 @@ namespace Inventario.services
 
             if (empleadoFound == null)
             {
-                return null;
+                throw new KeyNotFoundException("Empleado no encontrado.");
             }
             var token = _AsinacionesService.GetTokenFromHeader();
             empleadoFound.ActualizarPropiedades(empleado);

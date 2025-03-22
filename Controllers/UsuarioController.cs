@@ -19,41 +19,63 @@ namespace Inventario.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuarios()
         {
+            try
+            {
+
                 var usuarios = await _usuarioService.GetUsuarios();
 
-                if (usuarios == null || !usuarios.Any())
-                    return NotFound("No se encontraron usuarios.");
-
                 return Ok(usuarios);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
 
 
         }
         [HttpGet("activos")]
         public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuariosActivos()
         {
+            try
+            {
                 var usuarios = await _usuarioService.GetUsuariosActivos();
 
-                if (usuarios == null || !usuarios.Any())
-                    return NotFound("No se encontraron usuarios.");
-
                 return Ok(usuarios);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
 
 
         }
         [HttpGet("{id}")]
         public async Task<ActionResult<IEnumerable<Usuario>>> GetUsuarioById(string id)
         {
-
+            try
+            {
                 var usuarios = await _usuarioService.GetUsuarioById(id);
 
                 return Ok(usuarios);
-
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
         [HttpPost]
         public async Task<ActionResult<Usuario>> CreateUsuarios(Usuario usuario)
         {
-            var usuarios = await _usuarioService.PostUsuario(usuario);
-            return CreatedAtAction(nameof(CreateUsuarios), new { id = usuarios.id }, usuarios);
+            try
+            {
+
+                var usuarios = await _usuarioService.PostUsuario(usuario);
+                return CreatedAtAction(nameof(CreateUsuarios), new { id = usuarios.id }, usuarios);
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
         }
 
         [HttpPut("{id}")]
@@ -61,10 +83,8 @@ namespace Inventario.Controllers
         {
             try
             {
-                // Llamada al Service
                 var usuarioActualizado = await _usuarioService.PutUsuario(id, usuario);
 
-                // Si todo sale bien, responde con un 200 OK
                 return Ok(usuarioActualizado);
             }
             catch (Exception ex)
