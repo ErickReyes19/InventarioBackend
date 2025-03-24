@@ -13,6 +13,7 @@ namespace Inventario.Models // Aquí faltaban llaves para definir el espacio de 
         public DbSet<Empleado> Empleados { get; set; }
         public DbSet<Usuario> Usuarios { get; set; }
         public DbSet<RolePermiso> RolePermiso { get; set; }
+        public DbSet<Empresa> Empresa { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

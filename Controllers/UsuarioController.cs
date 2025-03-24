@@ -26,7 +26,7 @@ namespace Inventario.Controllers
 
                 return Ok(usuarios);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -42,7 +42,7 @@ namespace Inventario.Controllers
 
                 return Ok(usuarios);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -58,7 +58,7 @@ namespace Inventario.Controllers
 
                 return Ok(usuarios);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -72,7 +72,7 @@ namespace Inventario.Controllers
                 var usuarios = await _usuarioService.PostUsuario(usuario);
                 return CreatedAtAction(nameof(CreateUsuarios), new { id = usuarios.id }, usuarios);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -87,7 +87,7 @@ namespace Inventario.Controllers
 
                 return Ok(usuarioActualizado);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }

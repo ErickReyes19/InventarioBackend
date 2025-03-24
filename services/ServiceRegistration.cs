@@ -24,6 +24,10 @@ public static class ServiceRegistration
         services.AddScoped<ILoginRepository, LoginRepository>();
         services.AddScoped<ILoginService, LoginService>();  
 
+        //Emrpesa
+        services.AddScoped<IEmpresaRepository, EmpresaRepository>();
+        services.AddScoped<IEmpresaService, EmpresaService>();  
+
         //Asignaciones
         services.AddScoped<IAsignaciones, AsingacionesService>(); 
     }

@@ -1,0 +1,15 @@
+meta {
+  name: GetEmpleadoById
+  type: http
+  seq: 5
+}
+
+get {
+  url: {{url}}/api/Empleado/3cbe9cca-0a78-4a19-9890-2e107c5de8a
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}

@@ -24,7 +24,7 @@ namespace Inventario.Controllers
                 var roles = await _rolService.GetRoles();
                 return Ok(roles);
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 throw;
             }
@@ -38,7 +38,7 @@ namespace Inventario.Controllers
                 var roles = await _rolService.GetRolById(id);
                 return Ok(roles);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -53,7 +53,7 @@ namespace Inventario.Controllers
                     return NotFound("No se encontraron roles.");
                 return Ok(roles);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -74,7 +74,7 @@ namespace Inventario.Controllers
                     return BadRequest("No se pudieron asignar todos los permisos.");
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -91,7 +91,7 @@ namespace Inventario.Controllers
             var rolCreate = await _rolService.PostRol(rol);
             return Ok(rolCreate);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -104,7 +104,7 @@ namespace Inventario.Controllers
             var rolUpdate = await _rolService.PutRol(rol, id);
             return Ok(rolUpdate);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }

@@ -18,9 +18,9 @@ namespace Inventario.Repositories
         {
             return await _dbContextInventario.Empleados.Include("Usuario").ToListAsync();
         }        
-        public async Task<Empleado> GetEmpleadoById(string id)
+        public async Task<Empleado?> GetEmpleadoById(string id)
         {
-            return await _dbContextInventario.Empleados.Where(e => e.id == id).FirstOrDefaultAsync();
+            return await _dbContextInventario.Empleados.Where(e => e.id == id).FirstOrDefaultAsync() ?? null;
         }
 
         public async Task<IEnumerable<Empleado>> GetEmpleadosActivos()

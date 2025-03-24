@@ -42,7 +42,7 @@ namespace Inventario.Controllers
                 var empleadoCreate = await _empleadoService.PostEmpleados(empleado);
                 return Ok(empleadoCreate);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -58,7 +58,7 @@ namespace Inventario.Controllers
 
                 return Ok(empleadoCreate);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 throw;
             }
@@ -74,7 +74,7 @@ namespace Inventario.Controllers
                 var empleadoCreate = await _empleadoService.GetEmpleadoById(id);
                 return Ok(empleadoCreate);
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 throw;
             }
@@ -89,7 +89,7 @@ namespace Inventario.Controllers
                 var empleados = await _empleadoService.GetEmpleadosActivos();
                 return Ok(empleados);
             }
-            catch (Exception ex)
+            catch (Exception )
             {
                 throw;
             }
