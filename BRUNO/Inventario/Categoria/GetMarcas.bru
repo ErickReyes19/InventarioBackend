@@ -1,0 +1,15 @@
+meta {
+  name: GetMarcas
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{url}}/api/Marca
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}

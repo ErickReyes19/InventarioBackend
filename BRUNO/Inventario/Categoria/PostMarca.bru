@@ -1,0 +1,22 @@
+meta {
+  name: PostMarca
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{url}}/api/Marca
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "nombre": "Apple",
+    "descripcion":"Marca apple"
+  }
+}

@@ -6,6 +6,7 @@ using Inventario.interfaces.IUsuario;
 using Inventario.repositories;
 using Inventario.interfaces.Rol;
 using Inventario.interfaces.ILogin;
+using Inventario.interfaces.IMarca;
 
 public static class ServiceRegistration
 {
@@ -31,6 +32,10 @@ public static class ServiceRegistration
         //Categoria
         services.AddScoped<ICategoriaRepository, CategoriaRepository>();
         services.AddScoped<ICategoriaService, CategoriaService>();  
+
+        //Marca
+        services.AddScoped<IMarcaRepository, MarcaRepository>();
+        services.AddScoped<IMarcaService, MarcaService>();  
 
         //Asignaciones
         services.AddScoped<IAsignaciones, AsingacionesService>(); 
