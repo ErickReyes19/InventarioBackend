@@ -9,6 +9,12 @@ public partial class Usuario
     [StringLength(36)]
     public string? id { get; set; }
 
+    [StringLength(36)]
+    public string empleado_id { get; set; }
+
+    [StringLength(36)]
+    public string empresa_id { get; set; }
+
     [Required]
     [StringLength(50)]
     public string usuario { get; set; }
@@ -18,9 +24,6 @@ public partial class Usuario
 
     public DateTime? created_at { get; set; }
     public DateTime? updated_at { get; set; }
-
-    [StringLength(36)]
-    public string empleado_id { get; set; }
 
     [StringLength(36)]
     [Required]
@@ -34,7 +37,10 @@ public partial class Usuario
     public Role? Role { get; set; }
 
     [ForeignKey("empleado_id")]
-    public Empleado? Empleado { get; set; }
+    public Empleado? Empleado { get; set; }   
+    
+    [ForeignKey("empresa_id")]
+    public Empresa? Empresa { get; set; }
 
     public string? adicionado_por { get; set; }
     public string? modificado_por { get; set; }

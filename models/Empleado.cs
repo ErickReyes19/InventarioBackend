@@ -8,7 +8,10 @@ public partial class Empleado
 {
     [Key]
     [StringLength(36)]
-    public string? id { get; set; }
+    public string? id { get; set; }    
+
+    [StringLength(36)]
+    public string? empresa_id { get; set; }
 
     [Required]
     [StringLength(100)]
@@ -34,6 +37,10 @@ public partial class Empleado
 
     public string? adicionado_por { get; set; }
     public string? modificado_por { get; set; }
+
+    [ForeignKey("empresa_id")]
+    public Empresa? Empresa { get; set; }
+
     public Usuario? Usuario { get; set; }
 
 }

@@ -24,7 +24,7 @@ namespace Inventario.repositories
 
         public async Task<Empresa> GetEmpresaById(string id)
         {
-            return await _dbContextInventario.Empresa.Where(e=> e.Id == id).FirstAsync();
+            return await _dbContextInventario.Empresa.Where(e=> e.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task<Empresa>PostEmpresa(Empresa empresa)

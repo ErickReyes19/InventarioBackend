@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Inventario.Migrations
 {
     [DbContext(typeof(DbContextInventario))]
-    [Migration("20250324195950_AddCreateTableEmpresa")]
-    partial class AddCreateTableEmpresa
+    [Migration("20250331155538_AddInitTable")]
+    partial class AddInitTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -25,13 +25,52 @@ namespace Inventario.Migrations
 
             MySqlModelBuilderExtensions.AutoIncrementColumns(modelBuilder);
 
-            modelBuilder.Entity("Empresa", b =>
+            modelBuilder.Entity("Categoria", b =>
                 {
                     b.Property<string>("Id")
                         .HasMaxLength(36)
                         .HasColumnType("varchar(36)");
 
-                    b.Property<string>("Usuarioid")
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Empresa_id")
+                        .IsRequired()
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<ulong>("activo")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("adicionado_por")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("created_at")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("modificado_por")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("updated_at")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Empresa_id")
+                        .IsUnique();
+
+                    b.ToTable("Categoria");
+                });
+
+            modelBuilder.Entity("Empresa", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(36)
                         .HasColumnType("varchar(36)");
 
                     b.Property<ulong>("activo")
@@ -55,8 +94,6 @@ namespace Inventario.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("Usuarioid");
 
                     b.ToTable("Empresa");
                 });
@@ -88,6 +125,10 @@ namespace Inventario.Migrations
                     b.Property<int?>("edad")
                         .HasColumnType("int");
 
+                    b.Property<string>("empresa_id")
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
+
                     b.Property<string>("genero")
                         .IsRequired()
                         .HasColumnType("longtext");
@@ -104,6 +145,8 @@ namespace Inventario.Migrations
                         .HasColumnType("datetime(6)");
 
                     b.HasKey("id");
+
+                    b.HasIndex("empresa_id");
 
                     b.ToTable("Empleados");
                 });
@@ -132,6 +175,11 @@ namespace Inventario.Migrations
                         .HasMaxLength(36)
                         .HasColumnType("varchar(36)");
 
+                    b.Property<string>("empresa_id")
+                        .IsRequired()
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
+
                     b.Property<string>("modificado_por")
                         .HasColumnType("longtext");
 
@@ -151,6 +199,9 @@ namespace Inventario.Migrations
                     b.HasKey("id");
 
                     b.HasIndex("empleado_id")
+                        .IsUnique();
+
+                    b.HasIndex("empresa_id")
                         .IsUnique();
 
                     b.HasIndex("role_id");
@@ -234,13 +285,24 @@ namespace Inventario.Migrations
                     b.ToTable("RolePermiso", (string)null);
                 });
 
-            modelBuilder.Entity("Empresa", b =>
+            modelBuilder.Entity("Categoria", b =>
                 {
-                    b.HasOne("Inventario.Models.Usuario", "Usuario")
-                        .WithMany()
-                        .HasForeignKey("Usuarioid");
+                    b.HasOne("Empresa", "Empresa")
+                        .WithOne("Categoria")
+                        .HasForeignKey("Categoria", "Empresa_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.Navigation("Usuario");
+                    b.Navigation("Empresa");
+                });
+
+            modelBuilder.Entity("Inventario.Models.Empleado", b =>
+                {
+                    b.HasOne("Empresa", "Empresa")
+                        .WithMany()
+                        .HasForeignKey("empresa_id");
+
+                    b.Navigation("Empresa");
                 });
 
             modelBuilder.Entity("Inventario.Models.Usuario", b =>
@@ -251,6 +313,12 @@ namespace Inventario.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Empresa", "Empresa")
+                        .WithOne("Usuario")
+                        .HasForeignKey("Inventario.Models.Usuario", "empresa_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Role", "Role")
                         .WithMany("Usuarios")
                         .HasForeignKey("role_id")
@@ -258,6 +326,8 @@ namespace Inventario.Migrations
                         .IsRequired();
 
                     b.Navigation("Empleado");
+
+                    b.Navigation("Empresa");
 
                     b.Navigation("Role");
                 });
@@ -279,6 +349,13 @@ namespace Inventario.Migrations
                     b.Navigation("Permiso");
 
                     b.Navigation("Rol");
+                });
+
+            modelBuilder.Entity("Empresa", b =>
+                {
+                    b.Navigation("Categoria");
+
+                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("Inventario.Models.Empleado", b =>

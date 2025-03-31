@@ -37,6 +37,7 @@ namespace Inventario.services
                 Rol = user.Role!.Nombre,
                 IdRol = user.Role.Id,
                 IdEmpleado = user.empleado_id,
+                IdEmpresa = user.empresa_id,
                 Permissions = string.Join(",", userPermissions)
             };
             

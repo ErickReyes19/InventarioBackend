@@ -90,6 +90,10 @@ namespace Inventario.services
             empleado.id = _AsinacionesService.GenerateNewId();
             empleado.created_at = _AsinacionesService.GetCurrentDateTime();
             empleado.updated_at = _AsinacionesService.GetCurrentDateTime();
+            if (string.IsNullOrEmpty(empleado.empresa_id))
+            {
+                empleado.empresa_id = _AsinacionesService.GetClaimValue(token!, "IdEmpresa") ?? "Sistema";
+            }
             empleado.adicionado_por = _AsinacionesService.GetClaimValue(token!, "User") ?? "Sistema";
             empleado.modificado_por = _AsinacionesService.GetClaimValue(token!, "User") ?? "Sistema";
             await _empleadoRepository.PostEmpleados(empleado);
@@ -119,6 +123,7 @@ namespace Inventario.services
             var token = _AsinacionesService.GetTokenFromHeader();
             empleadoFound.ActualizarPropiedades(empleado);
             empleadoFound.activo = empleado.activo;
+            empleado.empresa_id = _AsinacionesService.GetClaimValue(token!, "IdEmpresa") ?? "Sistema";
             empleadoFound.updated_at = _AsinacionesService.GetCurrentDateTime();
             empleadoFound.modificado_por = _AsinacionesService.GetClaimValue(token!, "User") ?? "Sistema";
 

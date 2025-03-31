@@ -75,6 +75,10 @@ namespace Inventario.services
             usuario.id = _asignaciones.GenerateNewId();
             usuario.created_at = _asignaciones.GetCurrentDateTime();
             usuario.updated_at = _asignaciones.GetCurrentDateTime();
+            if (string.IsNullOrEmpty(usuario.empresa_id))
+            {
+                usuario.empresa_id = _asignaciones.GetClaimValue(token!, "IdEmpresa") ?? "Sistema";
+            }
             usuario.contrasena = _asignaciones.EncriptPassword(usuario.contrasena);
             usuario.adicionado_por = _asignaciones.GetClaimValue(token, "User") ?? "Sistema";
             usuario.modificado_por = _asignaciones.GetClaimValue(token, "User") ?? "Sistema";
