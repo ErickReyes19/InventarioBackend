@@ -1,0 +1,23 @@
+meta {
+  name: PostUnidadMedida
+  type: http
+  seq: 5
+}
+
+post {
+  url: {{url}}/api/UnidadMedida
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "nombre": "Galon",
+    "descripcion":"Unidad en galon",
+    "Abreviatura":"GL"
+  }
+}

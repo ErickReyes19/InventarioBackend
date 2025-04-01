@@ -1,0 +1,24 @@
+meta {
+  name: PutUnidadMedida
+  type: http
+  seq: 6
+}
+
+put {
+  url: {{url}}/api/UnidadMedida/ba2c8b98-3ea6-4161-949c-afc5eec83292
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "nombre": "Kilogramos",
+    "descripcion":"Unidad en kilogramos",
+    "Abreviatura":"KG",
+    "activo": true
+  }
+}

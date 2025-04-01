@@ -1,0 +1,23 @@
+meta {
+  name: PutMarca
+  type: http
+  seq: 6
+}
+
+put {
+  url: {{url}}/api/Marca/57609cbd-bdd6-44ce-8f4f-66e39cc8dc3f
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+body:json {
+  {
+    "nombre": "LG",
+    "activo": true,
+    "descripcion": "Marca LG"
+  }
+}

@@ -1,0 +1,15 @@
+meta {
+  name: GetUnidadMedidaByEmpresa
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{url}}/api/UnidadMedida/porempresa
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}

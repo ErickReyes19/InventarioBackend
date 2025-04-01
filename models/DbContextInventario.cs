@@ -16,6 +16,7 @@ namespace Inventario.Models // Aquí faltaban llaves para definir el espacio de 
         public DbSet<Empresa> Empresa { get; set; }
         public DbSet<Categoria> Categoria { get; set; }
         public DbSet<Marca> Marca { get; set; }
+        public DbSet<UnidadDeMedida> UnidadDeMedida { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

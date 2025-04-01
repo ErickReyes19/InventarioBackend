@@ -1,0 +1,15 @@
+meta {
+  name: GetUnidaMedida
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{url}}/api/UnidadMedida
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}

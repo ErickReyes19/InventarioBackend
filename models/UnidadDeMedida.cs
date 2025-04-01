@@ -1,18 +1,17 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using Inventario.Models;
 
-
-public class Empresa
+public class UnidadDeMedida
 {
     [Key]
     [StringLength(36)]
     public string? Id { get; set; }
-
-    [Required]
-    [StringLength(100)]
-    public string nombre { get; set; }
-
+    [StringLength(36)]
+    public string? Empresa_id { get; set; }
+    public string Nombre { get; set; }
+    public string Descripcion { get; set; }
+    public string Abreviatura { get; set; }
     [Required]
     [Column(TypeName = "bit")]
     public bool activo { get; set; } = true;
@@ -21,9 +20,6 @@ public class Empresa
 
     public string? adicionado_por { get; set; }
     public string? modificado_por { get; set; }
-    public Usuario? Usuario { get; set; }
-    public Categoria? Categoria { get; set; }
-    public UnidadDeMedida? UnidadDeMedida { get; set; }
-
+    [ForeignKey("Empresa_id")]
+    public Empresa? Empresa { get; set; }
 }
-

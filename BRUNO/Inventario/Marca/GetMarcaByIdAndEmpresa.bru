@@ -1,0 +1,15 @@
+meta {
+  name: GetMarcaByIdAndEmpresa
+  type: http
+  seq: 8
+}
+
+get {
+  url: {{url}}/api/Marca/3095e787-b623-4583-b6c0-11d50ad9d2e9/empresa
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}

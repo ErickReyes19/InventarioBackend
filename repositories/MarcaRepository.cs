@@ -22,7 +22,7 @@ namespace Inventario.repositories
         }
         public async Task<IEnumerable<Marca>> GetMarcasActivasByEmpresaId(string id)
         {
-            return await _dbContextInventario.Marca.Where(c => c.activo == true && c.activo == true).Include("Empresa").ToListAsync();
+            return await _dbContextInventario.Marca.Where(c => c.activo == true && c.Empresa_id == id).Include("Empresa").ToListAsync();
         }
         public async Task<IEnumerable<Marca>> GetMarcasByEmpresaId(string id)
         {
