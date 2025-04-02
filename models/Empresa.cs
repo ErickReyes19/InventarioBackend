@@ -22,8 +22,6 @@ public class Empresa
     public string? adicionado_por { get; set; }
     public string? modificado_por { get; set; }
     public Usuario? Usuario { get; set; }
-    public Categoria? Categoria { get; set; }
-    public UnidadDeMedida? UnidadDeMedida { get; set; }
 
 }
 

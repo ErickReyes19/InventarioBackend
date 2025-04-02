@@ -8,6 +8,7 @@ using Inventario.interfaces.Rol;
 using Inventario.interfaces.ILogin;
 using Inventario.interfaces.IMarca;
 using Inventario.interfaces.UnidadMedida;
+using Inventario.interfaces.IProducto;
 
 public static class ServiceRegistration
 {
@@ -41,6 +42,10 @@ public static class ServiceRegistration
         //Unidad de medida
         services.AddScoped<IUnidadMedidaRepository, UnidadMedidaRepository>();
         services.AddScoped<IUnidadMedidaService, UnidadMedidaService>();  
+        
+        //Productos
+        services.AddScoped<IProductoRepository, ProductoRepository>();
+        services.AddScoped<IProductoService, ProductoService>();  
 
         //Asignaciones
         services.AddScoped<IAsignaciones, AsingacionesService>(); 

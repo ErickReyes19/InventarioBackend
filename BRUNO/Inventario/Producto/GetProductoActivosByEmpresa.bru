@@ -1,11 +1,11 @@
 meta {
-  name: GetCategorias
+  name: GetProductoActivosByEmpresa
   type: http
-  seq: 1
+  seq: 4
 }
 
 get {
-  url: {{url}}/api/Categoria
+  url: {{url}}/api/Producto/activas/empresa
   body: none
   auth: bearer
 }

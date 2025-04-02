@@ -57,8 +57,7 @@ namespace Inventario.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Empresa_id")
-                        .IsUnique();
+                    b.HasIndex("Empresa_id");
 
                     b.ToTable("Categoria");
                 });
@@ -272,6 +271,68 @@ namespace Inventario.Migrations
                     b.ToTable("Permisos");
                 });
 
+            modelBuilder.Entity("Producto", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
+
+                    b.Property<string>("Categoria_id")
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
+
+                    b.Property<string>("Descripcion")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Empresa_id")
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
+
+                    b.Property<string>("Marca_id")
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
+
+                    b.Property<string>("Nombre")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Sku")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("UnidadMedida_id")
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
+
+                    b.Property<ulong>("activo")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("adicionado_por")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("created_at")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("modificado_por")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("updated_at")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Categoria_id");
+
+                    b.HasIndex("Empresa_id");
+
+                    b.HasIndex("Marca_id");
+
+                    b.HasIndex("UnidadMedida_id");
+
+                    b.ToTable("Producto");
+                });
+
             modelBuilder.Entity("Role", b =>
                 {
                     b.Property<string>("Id")
@@ -360,8 +421,7 @@ namespace Inventario.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("Empresa_id")
-                        .IsUnique();
+                    b.HasIndex("Empresa_id");
 
                     b.ToTable("UnidadDeMedida");
                 });
@@ -369,8 +429,8 @@ namespace Inventario.Migrations
             modelBuilder.Entity("Categoria", b =>
                 {
                     b.HasOne("Empresa", "Empresa")
-                        .WithOne("Categoria")
-                        .HasForeignKey("Categoria", "Empresa_id");
+                        .WithMany()
+                        .HasForeignKey("Empresa_id");
 
                     b.Navigation("Empresa");
                 });
@@ -420,6 +480,33 @@ namespace Inventario.Migrations
                     b.Navigation("Empresa");
                 });
 
+            modelBuilder.Entity("Producto", b =>
+                {
+                    b.HasOne("Categoria", "Categoria")
+                        .WithMany()
+                        .HasForeignKey("Categoria_id");
+
+                    b.HasOne("Empresa", "Empresa")
+                        .WithMany()
+                        .HasForeignKey("Empresa_id");
+
+                    b.HasOne("Marca", "Marca")
+                        .WithMany()
+                        .HasForeignKey("Marca_id");
+
+                    b.HasOne("UnidadDeMedida", "UnidadMedida")
+                        .WithMany()
+                        .HasForeignKey("UnidadMedida_id");
+
+                    b.Navigation("Categoria");
+
+                    b.Navigation("Empresa");
+
+                    b.Navigation("Marca");
+
+                    b.Navigation("UnidadMedida");
+                });
+
             modelBuilder.Entity("RolePermiso", b =>
                 {
                     b.HasOne("Permiso", "Permiso")
@@ -442,18 +529,14 @@ namespace Inventario.Migrations
             modelBuilder.Entity("UnidadDeMedida", b =>
                 {
                     b.HasOne("Empresa", "Empresa")
-                        .WithOne("UnidadDeMedida")
-                        .HasForeignKey("UnidadDeMedida", "Empresa_id");
+                        .WithMany()
+                        .HasForeignKey("Empresa_id");
 
                     b.Navigation("Empresa");
                 });
 
             modelBuilder.Entity("Empresa", b =>
                 {
-                    b.Navigation("Categoria");
-
-                    b.Navigation("UnidadDeMedida");
-
                     b.Navigation("Usuario");
                 });
 

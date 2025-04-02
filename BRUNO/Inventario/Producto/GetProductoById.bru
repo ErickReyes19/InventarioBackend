@@ -1,0 +1,15 @@
+meta {
+  name: GetProductoById
+  type: http
+  seq: 7
+}
+
+get {
+  url: {{url}}/api/Producto/6dbefc12-09c5-44ae-895e-c066daf3c9ae
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}

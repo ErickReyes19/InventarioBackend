@@ -1,11 +1,11 @@
 meta {
-  name: PutUnidadMedida
+  name: PutCategoria
   type: http
   seq: 6
 }
 
 put {
-  url: 
+  url: {{url}}/api/Producto/6dbefc12-09c5-44ae-895e-c066daf3c9ae
   body: json
   auth: bearer
 }
@@ -21,7 +21,8 @@ body:json {
     "sku":"1234QWER",
     "marca_id":"5c441c88-26fa-4fc4-87c5-aac81e0325e4",
     "categoria_id":"101f6bd3-09e2-4113-b992-9e2ce1a1425a",
-    "UnidadMedida_id":"2e9cac7c-cf55-42d7-a0d1-e367dc652891"
+    "UnidadMedida_id":"2e9cac7c-cf55-42d7-a0d1-e367dc652891",
+    "activo":true
     
   }
 }

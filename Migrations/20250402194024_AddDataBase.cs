@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Inventario.Migrations
 {
     /// <inheritdoc />
-    public partial class AddInitTable : Migration
+    public partial class AddDataBase : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -86,7 +86,7 @@ namespace Inventario.Migrations
                 {
                     Id = table.Column<string>(type: "varchar(36)", maxLength: 36, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    Empresa_id = table.Column<string>(type: "varchar(36)", maxLength: 36, nullable: false)
+                    Empresa_id = table.Column<string>(type: "varchar(36)", maxLength: 36, nullable: true)
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Nombre = table.Column<string>(type: "longtext", nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
@@ -107,8 +107,7 @@ namespace Inventario.Migrations
                         name: "FK_Categoria_Empresa_Empresa_id",
                         column: x => x.Empresa_id,
                         principalTable: "Empresa",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -143,6 +142,70 @@ namespace Inventario.Migrations
                     table.ForeignKey(
                         name: "FK_Empleados_Empresa_empresa_id",
                         column: x => x.empresa_id,
+                        principalTable: "Empresa",
+                        principalColumn: "Id");
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "Marca",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "varchar(36)", maxLength: 36, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Empresa_id = table.Column<string>(type: "varchar(36)", maxLength: 36, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Nombre = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Descripcion = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    activo = table.Column<ulong>(type: "bit", nullable: false),
+                    created_at = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    updated_at = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    adicionado_por = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    modificado_por = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Marca", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Marca_Empresa_Empresa_id",
+                        column: x => x.Empresa_id,
+                        principalTable: "Empresa",
+                        principalColumn: "Id");
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "UnidadDeMedida",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "varchar(36)", maxLength: 36, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Empresa_id = table.Column<string>(type: "varchar(36)", maxLength: 36, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Nombre = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Descripcion = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Abreviatura = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    activo = table.Column<ulong>(type: "bit", nullable: false),
+                    created_at = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    updated_at = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    adicionado_por = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    modificado_por = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UnidadDeMedida", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UnidadDeMedida_Empresa_Empresa_id",
+                        column: x => x.Empresa_id,
                         principalTable: "Empresa",
                         principalColumn: "Id");
                 })
@@ -223,11 +286,64 @@ namespace Inventario.Migrations
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
+            migrationBuilder.CreateTable(
+                name: "Producto",
+                columns: table => new
+                {
+                    Id = table.Column<string>(type: "varchar(36)", maxLength: 36, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Empresa_id = table.Column<string>(type: "varchar(36)", maxLength: 36, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Marca_id = table.Column<string>(type: "varchar(36)", maxLength: 36, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Categoria_id = table.Column<string>(type: "varchar(36)", maxLength: 36, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    UnidadMedida_id = table.Column<string>(type: "varchar(36)", maxLength: 36, nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Nombre = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Sku = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Descripcion = table.Column<string>(type: "longtext", nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    activo = table.Column<ulong>(type: "bit", nullable: false),
+                    created_at = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    updated_at = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    adicionado_por = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    modificado_por = table.Column<string>(type: "longtext", nullable: true)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Producto", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Producto_Categoria_Categoria_id",
+                        column: x => x.Categoria_id,
+                        principalTable: "Categoria",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Producto_Empresa_Empresa_id",
+                        column: x => x.Empresa_id,
+                        principalTable: "Empresa",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Producto_Marca_Marca_id",
+                        column: x => x.Marca_id,
+                        principalTable: "Marca",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Producto_UnidadDeMedida_UnidadMedida_id",
+                        column: x => x.UnidadMedida_id,
+                        principalTable: "UnidadDeMedida",
+                        principalColumn: "Id");
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
             migrationBuilder.CreateIndex(
                 name: "IX_Categoria_Empresa_id",
                 table: "Categoria",
-                column: "Empresa_id",
-                unique: true);
+                column: "Empresa_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Empleados_empresa_id",
@@ -235,9 +351,39 @@ namespace Inventario.Migrations
                 column: "empresa_id");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Marca_Empresa_id",
+                table: "Marca",
+                column: "Empresa_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Producto_Categoria_id",
+                table: "Producto",
+                column: "Categoria_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Producto_Empresa_id",
+                table: "Producto",
+                column: "Empresa_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Producto_Marca_id",
+                table: "Producto",
+                column: "Marca_id");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Producto_UnidadMedida_id",
+                table: "Producto",
+                column: "UnidadMedida_id");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_RolePermiso_PermisoId",
                 table: "RolePermiso",
                 column: "PermisoId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UnidadDeMedida_Empresa_id",
+                table: "UnidadDeMedida",
+                column: "Empresa_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Usuarios_empleado_id",
@@ -261,13 +407,22 @@ namespace Inventario.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Categoria");
+                name: "Producto");
 
             migrationBuilder.DropTable(
                 name: "RolePermiso");
 
             migrationBuilder.DropTable(
                 name: "Usuarios");
+
+            migrationBuilder.DropTable(
+                name: "Categoria");
+
+            migrationBuilder.DropTable(
+                name: "Marca");
+
+            migrationBuilder.DropTable(
+                name: "UnidadDeMedida");
 
             migrationBuilder.DropTable(
                 name: "Permisos");
