@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Inventario.Migrations
 {
     /// <inheritdoc />
-    public partial class AddDataBase : Migration
+    public partial class AddInitDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -394,8 +394,7 @@ namespace Inventario.Migrations
             migrationBuilder.CreateIndex(
                 name: "IX_Usuarios_empresa_id",
                 table: "Usuarios",
-                column: "empresa_id",
-                unique: true);
+                column: "empresa_id");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Usuarios_role_id",

@@ -1,0 +1,15 @@
+meta {
+  name: GetPrecio
+  type: http
+  seq: 3
+}
+
+get {
+  url: {{url}}/api/PrecioProducto/precio/a6a3d573-06bf-4581-9315-5ddff9b4ad75
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}

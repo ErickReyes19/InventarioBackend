@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Inventario.Migrations
 {
     [DbContext(typeof(DbContextInventario))]
-    [Migration("20250402194024_AddDataBase")]
-    partial class AddDataBase
+    [Migration("20250403164323_AddTablePrecioProducto")]
+    partial class AddTablePrecioProducto
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -199,8 +199,7 @@ namespace Inventario.Migrations
                     b.HasIndex("empleado_id")
                         .IsUnique();
 
-                    b.HasIndex("empresa_id")
-                        .IsUnique();
+                    b.HasIndex("empresa_id");
 
                     b.HasIndex("role_id");
 
@@ -272,6 +271,46 @@ namespace Inventario.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Permisos");
+                });
+
+            modelBuilder.Entity("PrecioProductos", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
+
+                    b.Property<DateTime?>("FechaFin")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("FechaInicio")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<decimal>("PrecioCompra")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<decimal>("PrecioVenta")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<string>("Producto_id")
+                        .HasColumnType("varchar(36)");
+
+                    b.Property<string>("adicionado_por")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("created_at")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("modificado_por")
+                        .HasColumnType("longtext");
+
+                    b.Property<DateTime?>("updated_at")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Producto_id");
+
+                    b.ToTable("PrecioProducto");
                 });
 
             modelBuilder.Entity("Producto", b =>
@@ -456,8 +495,8 @@ namespace Inventario.Migrations
                         .IsRequired();
 
                     b.HasOne("Empresa", "Empresa")
-                        .WithOne("Usuario")
-                        .HasForeignKey("Inventario.Models.Usuario", "empresa_id")
+                        .WithMany()
+                        .HasForeignKey("empresa_id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -481,6 +520,15 @@ namespace Inventario.Migrations
                         .HasForeignKey("Empresa_id");
 
                     b.Navigation("Empresa");
+                });
+
+            modelBuilder.Entity("PrecioProductos", b =>
+                {
+                    b.HasOne("Producto", "Producto")
+                        .WithMany()
+                        .HasForeignKey("Producto_id");
+
+                    b.Navigation("Producto");
                 });
 
             modelBuilder.Entity("Producto", b =>
@@ -536,11 +584,6 @@ namespace Inventario.Migrations
                         .HasForeignKey("Empresa_id");
 
                     b.Navigation("Empresa");
-                });
-
-            modelBuilder.Entity("Empresa", b =>
-                {
-                    b.Navigation("Usuario");
                 });
 
             modelBuilder.Entity("Inventario.Models.Empleado", b =>

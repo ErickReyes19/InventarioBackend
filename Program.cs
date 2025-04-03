@@ -1,6 +1,7 @@
 using System.Globalization;
 using System.Text;
 using AspNetCoreRateLimit;
+using CarWashBackend.Data;
 using Inventario.Models;
 using Inventario.services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -31,7 +32,7 @@ builder.WebHost.ConfigureKestrel(options =>
 //var mysqlPassword = Environment.GetEnvironmentVariable("MYSQL_PASSWORD");
 //var connectionString = $"server={mysqlHost};database={mysqlDatabase};uid={mysqlUser};pwd={mysqlPassword}";
 
-
+ 
 // Definir las credenciales de la base de datos de forma fija
 var mysqlHost = "localhost";
 var mysqlDatabase = "Inventario_DB";
@@ -107,8 +108,8 @@ using (var scope = app.Services.CreateScope())
         Console.WriteLine("Migraciones aplicadas correctamente.");
 
         // Ejecutar el seeder para poblar datos (si es necesario)
-        //var seeder = new Seeder(context, true);
-        //seeder.Seed();
+        var seeder = new Seeder(context, true);
+        seeder.Seed();
         Console.WriteLine("Seeding completo.");
     }
     catch (Exception ex)

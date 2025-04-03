@@ -9,6 +9,7 @@ using Inventario.interfaces.ILogin;
 using Inventario.interfaces.IMarca;
 using Inventario.interfaces.UnidadMedida;
 using Inventario.interfaces.IProducto;
+using Inventario.interfaces.IPrecioProducto;
 
 public static class ServiceRegistration
 {
@@ -46,6 +47,10 @@ public static class ServiceRegistration
         //Productos
         services.AddScoped<IProductoRepository, ProductoRepository>();
         services.AddScoped<IProductoService, ProductoService>();  
+        
+        //PrecioProducto
+        services.AddScoped<IPrecioProductoRepository, PrecioProductoRepository>();
+        services.AddScoped<IPrecioProductoService, PrecioProductoService>();  
 
         //Asignaciones
         services.AddScoped<IAsignaciones, AsingacionesService>(); 

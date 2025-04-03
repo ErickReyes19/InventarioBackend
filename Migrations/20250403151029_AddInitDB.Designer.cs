@@ -4,6 +4,7 @@ using Inventario.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Inventario.Migrations
 {
     [DbContext(typeof(DbContextInventario))]
-    partial class DbContextInventarioModelSnapshot : ModelSnapshot
+    [Migration("20250403151029_AddInitDB")]
+    partial class AddInitDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -270,46 +273,6 @@ namespace Inventario.Migrations
                     b.ToTable("Permisos");
                 });
 
-            modelBuilder.Entity("PrecioProductos", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasMaxLength(36)
-                        .HasColumnType("varchar(36)");
-
-                    b.Property<DateTime?>("FechaFin")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<DateTime>("FechaInicio")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<decimal>("PrecioCompra")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.Property<decimal>("PrecioVenta")
-                        .HasColumnType("decimal(65,30)");
-
-                    b.Property<string>("Producto_id")
-                        .HasColumnType("varchar(36)");
-
-                    b.Property<string>("adicionado_por")
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime?>("created_at")
-                        .HasColumnType("datetime(6)");
-
-                    b.Property<string>("modificado_por")
-                        .HasColumnType("longtext");
-
-                    b.Property<DateTime?>("updated_at")
-                        .HasColumnType("datetime(6)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("Producto_id");
-
-                    b.ToTable("PrecioProducto");
-                });
-
             modelBuilder.Entity("Producto", b =>
                 {
                     b.Property<string>("Id")
@@ -517,15 +480,6 @@ namespace Inventario.Migrations
                         .HasForeignKey("Empresa_id");
 
                     b.Navigation("Empresa");
-                });
-
-            modelBuilder.Entity("PrecioProductos", b =>
-                {
-                    b.HasOne("Producto", "Producto")
-                        .WithMany()
-                        .HasForeignKey("Producto_id");
-
-                    b.Navigation("Producto");
                 });
 
             modelBuilder.Entity("Producto", b =>
