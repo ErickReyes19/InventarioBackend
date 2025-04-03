@@ -243,6 +243,46 @@ namespace Inventario.Migrations
                     b.ToTable("Marca");
                 });
 
+            modelBuilder.Entity("MovimientoInventario", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasMaxLength(36)
+                        .HasColumnType("varchar(36)");
+
+                    b.Property<string>("Adicionado_por")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("Cantidad")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("Created_at")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<DateTime>("Fecha")
+                        .HasColumnType("datetime(6)");
+
+                    b.Property<string>("Modificado_por")
+                        .HasColumnType("longtext");
+
+                    b.Property<decimal>("Precio")
+                        .HasColumnType("decimal(65,30)");
+
+                    b.Property<string>("Producto_id")
+                        .HasColumnType("varchar(36)");
+
+                    b.Property<int>("Tipo")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime?>("Updated_at")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("Producto_id");
+
+                    b.ToTable("MovimientoInventario");
+                });
+
             modelBuilder.Entity("Permiso", b =>
                 {
                     b.Property<string>("Id")
@@ -517,6 +557,15 @@ namespace Inventario.Migrations
                         .HasForeignKey("Empresa_id");
 
                     b.Navigation("Empresa");
+                });
+
+            modelBuilder.Entity("MovimientoInventario", b =>
+                {
+                    b.HasOne("Producto", "Producto")
+                        .WithMany()
+                        .HasForeignKey("Producto_id");
+
+                    b.Navigation("Producto");
                 });
 
             modelBuilder.Entity("PrecioProductos", b =>
