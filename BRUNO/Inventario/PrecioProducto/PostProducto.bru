@@ -5,7 +5,7 @@ meta {
 }
 
 post {
-  url: {{url}}/api/Producto
+  url: {{url}}/api/PrecioProducto
   body: json
   auth: bearer
 }
@@ -16,12 +16,9 @@ auth:bearer {
 
 body:json {
   {
-    "nombre": "fosil blanco de metal",
-    "descripcion":"Reloj fosil blanco de metal",
-    "sku":"124QaWER",
-    "marca_id":"540e7df1-7764-4b26-8d88-2d3ab664f669",
-    "categoria_id":"de1bb407-f86a-4ace-81f8-02dcff76c549",
-    "UnidadMedida_id":"5aac8f49-1435-4797-892d-bf77bdd57d15"
+    "PrecioCompra": 24.2,
+    "PrecioVenta":  30.1,
+    "Producto_id":"a6a3d573-06bf-4581-9315-5ddff9b4ad75"
     
   }
 }
